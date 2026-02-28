@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VISAYASMED IT Department – Admin Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy2: #0d1f3c;
+    --blue: #1a3a6b;
+    --accent: #2f80ed;
+    --accent2: #56ccf2;
+    --glass: rgba(255,255,255,0.05);
+    --glass-border: rgba(255,255,255,0.1);
+    --text: #e8f0fe;
+    --muted: #8aa0c0;
+    --danger: #e74c3c;
+    --success: #27ae60;
+    --warning: #f39c12;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── BG ─── */
+  .bg-mesh {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 20%, rgba(47,128,237,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 10% 80%, rgba(86,204,242,0.1) 0%, transparent 50%),
+      var(--navy);
+  }
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(47,128,237,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(47,128,237,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* ─── SCREENS ─── */
+  .screen { position: relative; z-index: 1; min-height: 100vh; }
+  .hidden { display: none !important; }
+
+  /* ─── AUTH SCREEN ─── */
+  #auth-screen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 20px;
+  }
+  .auth-card {
+    background: rgba(13,31,60,0.85);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    width: 100%; max-width: 440px;
+    padding: 48px 40px;
+    backdrop-filter: blur(24px);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+    animation: slideUp 0.5s ease;
+  }
+  @keyframes slideUp {
+    from { opacity:0; transform: translateY(24px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+  .auth-logo {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 32px;
+  }
+  .auth-logo-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .auth-logo-text { font-family: 'Syne', sans-serif; }
+  .auth-logo-text .brand { font-size: 18px; font-weight: 800; letter-spacing: 1px; }
+  .auth-logo-text .sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+
+  .auth-tabs {
+    display: flex; gap: 4px; background: rgba(255,255,255,0.05);
+    border-radius: 10px; padding: 4px; margin-bottom: 28px;
+  }
+  .auth-tab {
+    flex: 1; padding: 10px; border: none; background: transparent;
+    color: var(--muted); font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500; border-radius: 7px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .auth-tab.active {
+    background: var(--accent); color: #fff;
+  }
+
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block; font-size: 12px; font-weight: 500;
+    color: var(--muted); letter-spacing: 0.5px; margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .form-group input, .form-group select {
+    width: 100%; padding: 13px 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 15px;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+  }
+  .form-group input:focus, .form-group select:focus {
+    border-color: var(--accent); background: rgba(47,128,237,0.08);
+  }
+  .form-group select option { background: var(--navy2); }
+
+  .btn-primary {
+    width: 100%; padding: 14px; border: none; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), #1a6fd4);
+    color: #ffffff; font-family: 'Syne', sans-serif;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    letter-spacing: 0.5px; transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(47,128,237,0.4); }
+
+  .auth-msg {
+    margin-top: 14px; padding: 12px 16px; border-radius: 8px;
+    font-size: 13px; text-align: center;
+  }
+  .auth-msg.error { background: rgba(231,76,60,0.15); color: #e74c3c; border: 1px solid rgba(231,76,60,0.3); }
+  .auth-msg.success { background: rgba(39,174,96,0.15); color: #2ecc71; border: 1px solid rgba(39,174,96,0.3); }
+
+  .badge-admin {
+    display: inline-block; padding: 2px 8px; border-radius: 20px;
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    background: linear-gradient(135deg, #f39c12, #e67e22); color: #fff;
+    text-transform: uppercase; vertical-align: middle;
+  }
+  .badge-user {
+    display: inline-block; padding: 2px 8px; border-radius: 20px;
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    background: rgba(47,128,237,0.25); color: var(--accent2);
+    text-transform: uppercase; vertical-align: middle; border: 1px solid rgba(86,204,242,0.3);
+  }
+
+  /* ─── PORTAL LAYOUT ─── */
+  #portal-screen { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 260px; flex-shrink: 0;
+    background: rgba(10,22,40,0.9);
+    border-right: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+    display: flex; flex-direction: column;
+    padding: 24px 0; position: fixed; top:0; left:0; height:100vh;
+    z-index: 100;
+  }
+  .sidebar-logo {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 24px 24px; border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 16px;
+  }
+  .sidebar-logo-icon {
+    width: 38px; height: 38px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .sidebar-logo-text .brand { font-family:'Syne',sans-serif; font-weight:800; font-size:15px; }
+  .sidebar-logo-text .sub { font-size:10px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; }
+
+  .nav-section { padding: 0 16px; margin-bottom: 8px; }
+  .nav-section-label {
+    font-size: 10px; color: var(--muted); letter-spacing: 2px;
+    text-transform: uppercase; padding: 8px 8px 8px; font-weight: 600;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 12px; border-radius: 10px; cursor: pointer;
+    color: var(--muted); font-size: 14px; font-weight: 500;
+    transition: all 0.2s; margin-bottom: 2px; border: none; background: none; width: 100%;
+    text-align: left;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+  .nav-item.active { background: rgba(47,128,237,0.15); color: var(--accent2); }
+  .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+  .nav-item .nav-label { flex: 1; }
+  .nav-item .nav-badge {
+    background: var(--accent); color:#fff; border-radius:20px;
+    font-size:10px; font-weight:700; padding:2px 7px;
+  }
+
+  .sidebar-footer {
+    margin-top: auto; padding: 16px;
+    border-top: 1px solid var(--glass-border);
+  }
+  .user-info {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+  }
+  .user-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px;
+  }
+  .user-details .uname { font-size: 13px; font-weight: 600; }
+  .user-details .urole { font-size: 11px; color: var(--muted); }
+  .logout-btn {
+    margin-top: 10px; width: 100%; padding: 10px; border: 1px solid var(--glass-border);
+    border-radius: 8px; background: transparent; color: var(--muted);
+    font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .logout-btn:hover { background: rgba(231,76,60,0.1); color: #e74c3c; border-color: rgba(231,76,60,0.3); }
+
+  /* ─── MAIN ─── */
+  .main-content {
+    margin-left: 260px; flex: 1; padding: 32px;
+    min-height: 100vh;
+  }
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  .page-header { margin-bottom: 28px; }
+  .page-header h1 { font-family:'Syne',sans-serif; font-size:26px; font-weight:800; }
+  .page-header p { color:var(--muted); font-size:14px; margin-top:6px; }
+
+  /* ─── STATS GRID ─── */
+  .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap:16px; margin-bottom:28px; }
+  .stat-card {
+    background: rgba(13,31,60,0.7); border: 1px solid var(--glass-border);
+    border-radius: 14px; padding: 20px;
+    backdrop-filter: blur(12px);
+  }
+  .stat-card .stat-label { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
+  .stat-card .stat-value { font-family:'Syne',sans-serif; font-size:30px; font-weight:800; }
+  .stat-card .stat-sub { font-size:12px; color:var(--muted); margin-top:4px; }
+  .stat-card.blue .stat-value { color:var(--accent2); }
+  .stat-card.green .stat-value { color:#2ecc71; }
+  .stat-card.orange .stat-value { color:#f39c12; }
+  .stat-card.red .stat-value { color:#e74c3c; }
+
+  /* ─── TABLE ─── */
+  .card {
+    background: rgba(13,31,60,0.7); border: 1px solid var(--glass-border);
+    border-radius: 14px; padding: 24px; backdrop-filter: blur(12px);
+    margin-bottom: 20px;
+  }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+  }
+  .card-header h2 { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; }
+  .card-actions { display:flex; gap:8px; }
+  .btn-sm {
+    padding: 8px 16px; border-radius: 8px; font-size: 13px;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; border: none;
+  }
+  .btn-sm.primary { background: var(--accent); color:#fff; }
+  .btn-sm.primary:hover { background: #1a6fd4; }
+  .btn-sm.ghost { background: transparent; border:1px solid var(--glass-border); color:var(--muted); }
+  .btn-sm.ghost:hover { color:var(--text); border-color:rgba(255,255,255,0.2); }
+  .btn-sm.danger { background: rgba(231,76,60,0.15); color:#e74c3c; border:1px solid rgba(231,76,60,0.3); }
+  .btn-sm.danger:hover { background: rgba(231,76,60,0.25); }
+
+  table { width:100%; border-collapse:collapse; }
+  th {
+    text-align:left; padding:10px 14px; font-size:11px;
+    color:var(--muted); text-transform:uppercase; letter-spacing:1px;
+    border-bottom:1px solid var(--glass-border);
+  }
+  td {
+    padding:13px 14px; font-size:14px; border-bottom:1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:rgba(255,255,255,0.02); }
+
+  .status-dot {
+    display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:7px;
+  }
+  .status-dot.online { background:#2ecc71; box-shadow:0 0 6px #2ecc71; }
+  .status-dot.offline { background:#e74c3c; }
+  .status-dot.pending { background:#f39c12; }
+
+  /* ─── TICKET FORM ─── */
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .form-group textarea {
+    width:100%; padding:13px 16px; min-height:100px;
+    background:rgba(255,255,255,0.06); border:1px solid var(--glass-border);
+    border-radius:10px; color:var(--text); font-family:'DM Sans',sans-serif;
+    font-size:15px; resize:vertical; outline:none; transition:border-color 0.2s;
+  }
+  .form-group textarea:focus { border-color:var(--accent); }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position:fixed; inset:0; background:rgba(0,0,0,0.7);
+    z-index:999; display:flex; align-items:center; justify-content:center;
+    backdrop-filter:blur(4px); animation:fadeIn 0.2s ease;
+  }
+  .modal {
+    background: rgba(13,31,60,0.98); border:1px solid var(--glass-border);
+    border-radius:16px; padding:32px; width:100%; max-width:480px;
+    max-height:90vh; overflow-y:auto;
+  }
+  .modal h2 { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; margin-bottom:20px; }
+  .modal-footer { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
+
+  /* ─── PROFILE ─── */
+  .profile-avatar {
+    width:80px; height:80px; border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Syne',sans-serif; font-weight:800; font-size:28px;
+    margin-bottom:16px;
+  }
+  .info-row { display:flex; align-items:center; padding:12px 0; border-bottom:1px solid var(--glass-border); font-size:14px; }
+  .info-label { color:var(--muted); width:140px; flex-shrink:0; }
+
+  /* ─── ANNOUNCEMENTS ─── */
+  .announce-item {
+    padding:16px; border-radius:10px; background:rgba(255,255,255,0.03);
+    border:1px solid var(--glass-border); margin-bottom:12px;
+    border-left:3px solid var(--accent);
+  }
+  .announce-title { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:6px; }
+  .announce-meta { font-size:12px; color:var(--muted); }
+  .announce-body { font-size:14px; color:#b0c4de; margin-top:8px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:3px; }
+
+  /* RESPONSIVE */
+  @media (max-width:900px) {
+    .sidebar { width:60px; }
+    .nav-label, .nav-badge, .sidebar-logo-text, .user-details, .logout-btn, .nav-section-label { display:none; }
+    .main-content { margin-left:60px; padding:20px; }
+    .stats-grid { grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<div class="bg-grid"></div>
+
+<!-- ─── AUTH SCREEN ─── -->
+<div id="auth-screen" class="screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🏥</div>
+      <div class="auth-logo-text">
+        <div class="brand">VISAYASMED</div>
+        <div class="sub">IT Department · Admin Portal</div>
+      </div>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('signin')">Sign In</button>
+      <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- SIGN IN -->
+    <div id="signin-form">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="login-email" placeholder="you@visayasmed.com.ph" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-pass" placeholder="••••••" />
+      </div>
+      <button class="btn-primary" onclick="login()">Sign In to Portal</button>
+      <div id="login-msg"></div>
+    </div>
+
+    <!-- SIGN UP -->
+    <div id="signup-form" class="hidden">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="reg-name" placeholder="Juan Dela Cruz" />
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="reg-email" placeholder="juan@visayasmed.com.ph" />
+      </div>
+      <div class="form-group">
+        <label>Department</label>
+        <select id="reg-dept">
+          <option value="">Select Department</option>
+          <option>IT Department</option>
+          <option>Nursing</option>
+          <option>Radiology</option>
+          <option>Laboratory</option>
+          <option>Pharmacy</option>
+          <option>Administration</option>
+          <option>Finance</option>
+          <option>Maintenance</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="reg-pass" placeholder="Min. 8 characters" />
+      </div>
+      <button class="btn-primary" onclick="register()">Create Account</button>
+      <div id="reg-msg"></div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;text-align:center;">
+        New accounts are reviewed with <strong>User</strong> access. Contact IT Admin to request elevated permissions.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PORTAL ─── -->
+<div id="portal-screen" class="screen hidden">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">🏥</div>
+      <div class="sidebar-logo-text">
+        <div class="brand">VISAYASMED</div>
+        <div class="sub">IT Portal</div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <button class="nav-item active" onclick="showPage('dashboard', this)">
+        <span class="icon">📊</span><span class="nav-label">Dashboard</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='admin-tickets.html'">
+        <span class="icon">🎫</span><span class="nav-label">Ticket Management</span>
+        <span class="nav-badge" id="ticket-badge">0</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='admin-announcements.html'">
+        <span class="icon">📣</span><span class="nav-label">Announcements</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='admin-profile.html'">
+        <span class="icon">👤</span><span class="nav-label">My Profile</span>
+      </button>
+    </div>
+
+    <div class="nav-section" id="admin-nav" style="display:none">
+      <div class="nav-section-label">Admin</div>
+      <button class="nav-item" onclick="window.location.href='admin-dashboard.html'">
+        <span class="icon">👥</span><span class="nav-label">User Management</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='admin-tickets.html'">
+        <span class="icon">📋</span><span class="nav-label">All Tickets</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='admin-announcements.html'">
+        <span class="icon">✏️</span><span class="nav-label">Post Announcement</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="sb-avatar">?</div>
+        <div class="user-details">
+          <div class="uname" id="sb-name">—</div>
+          <div class="urole" id="sb-role">—</div>
+        </div>
+      </div>
+      <a href="index.html" style="text-decoration: none;">
+        <button class="logout-btn" style="margin-bottom: 8px;">🌐 IT Portal</button>
+      </a>
+      <button class="logout-btn" onclick="logout()">⏻ Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <p id="dash-welcome">Welcome back!</p>
+      </div>
+
+      <div class="stats-grid" id="dash-stats">
+        <div class="stat-card blue">
+          <div class="stat-label">Open Tickets</div>
+          <div class="stat-value" id="stat-open">0</div>
+          <div class="stat-sub">Awaiting resolution</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Resolved</div>
+          <div class="stat-value" id="stat-resolved">0</div>
+          <div class="stat-sub">This month</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-label">Pending</div>
+          <div class="stat-value" id="stat-pending">0</div>
+          <div class="stat-sub">In progress</div>
+        </div>
+        <div class="stat-card red" id="stat-users-card" style="display:none">
+          <div class="stat-label">Total Users</div>
+          <div class="stat-value" id="stat-users">0</div>
+          <div class="stat-sub">Registered accounts</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Recent Tickets</h2>
+          <div class="card-actions">
+            <button class="btn-sm primary" onclick="window.location.href='admin-tickets.html'">＋ New Ticket</button>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>ID</th><th>Subject</th><th>Priority</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody id="dash-tickets-body">
+            <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">No tickets yet</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TICKETS PAGE -->
+    <div class="page" id="page-tickets">
+      <div class="page-header">
+        <h1>My Tickets</h1>
+        <p>Track your IT support requests</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2>Support Tickets</h2>
+          <button class="btn-sm primary" onclick="document.getElementById('new-ticket-modal').classList.remove('hidden')">＋ Submit Ticket</button>
+        </div>
+        <table>
+          <thead><tr><th>ID</th><th>Subject</th><th>Category</th><th>Priority</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody id="my-tickets-body">
+            <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">No tickets submitted</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ANNOUNCEMENTS PAGE -->
+    <div class="page" id="page-announcements">
+      <div class="page-header">
+        <h1>Announcements</h1>
+        <p>Latest updates from the IT Department</p>
+      </div>
+      <div id="announcements-list">
+        <div class="announce-item">
+          <div class="announce-title">🔒 Scheduled Maintenance – March 1, 2026</div>
+          <div class="announce-meta">Posted by Admin · Feb 26, 2026</div>
+          <div class="announce-body">The hospital network will undergo scheduled maintenance on March 1, 2026 from 12:00 AM – 4:00 AM. Please save all work beforehand. Critical systems will remain operational.</div>
+        </div>
+        <div class="announce-item">
+          <div class="announce-title">🖥️ New Workstations Deployed in Ward 3 & 4</div>
+          <div class="announce-meta">Posted by Admin · Feb 20, 2026</div>
+          <div class="announce-body">Upgraded workstations have been deployed in Wards 3 and 4. Staff should log in using existing credentials. Contact IT Help Desk for any issues.</div>
+        </div>
+        <div class="announce-item">
+          <div class="announce-title">🔐 Password Policy Update – Action Required</div>
+          <div class="announce-meta">Posted by Admin · Feb 10, 2026</div>
+          <div class="announce-body">All staff must update their passwords by February 28, 2026. Passwords must be at least 12 characters and include uppercase, lowercase, numbers, and symbols.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div class="page" id="page-profile">
+      <div class="page-header">
+        <h1>My Profile</h1>
+        <p>Your account details</p>
+      </div>
+      <div class="card" style="max-width:600px">
+        <div class="profile-avatar" id="prof-avatar">?</div>
+        <div id="prof-info"></div>
+      </div>
+    </div>
+
+    <!-- USER MANAGEMENT (admin only) -->
+    <div class="page" id="page-user-management">
+      <div class="page-header">
+        <h1>User Management</h1>
+        <p>Manage all registered accounts</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2>All Users</h2>
+          <button class="btn-sm primary" onclick="openCreateUserModal()">＋ Create User</button>
+        </div>
+        <table>
+          <thead><tr><th>Name</th><th>Email</th><th>Department</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="users-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ALL TICKETS (admin only) -->
+    <div class="page" id="page-all-tickets">
+      <div class="page-header">
+        <h1>All Tickets</h1>
+        <p>Manage all support requests</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2>Support Requests</h2>
+        </div>
+        <table>
+          <thead><tr><th>ID</th><th>Subject</th><th>Submitted By</th><th>Priority</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="all-tickets-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MANAGE ANNOUNCEMENTS (admin only) -->
+    <div class="page" id="page-manage-announcements">
+      <div class="page-header">
+        <h1>Post Announcement</h1>
+        <p>Broadcast updates to all staff</p>
+      </div>
+      <div class="card" style="max-width:640px">
+        <div class="form-group">
+          <label>Announcement Title</label>
+          <input type="text" id="ann-title" placeholder="e.g., Scheduled Maintenance Notice" />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="ann-body" placeholder="Write your announcement here..."></textarea>
+        </div>
+        <button class="btn-sm primary" style="padding:12px 24px" onclick="postAnnouncement()">📣 Post Announcement</button>
+        <div id="ann-msg" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ─── MODALS ─── -->
+
+<!-- New Ticket Modal -->
+<div id="new-ticket-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <h2>🎫 Submit a Support Ticket</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Category</label>
+        <select id="t-cat">
+          <option>Hardware</option>
+          <option>Software</option>
+          <option>Network</option>
+          <option>Account/Access</option>
+          <option>Printer/Scanner</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select id="t-priority">
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+          <option>Critical</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Subject</label>
+      <input type="text" id="t-subject" placeholder="Brief description of the issue" />
+    </div>
+    <div class="form-group">
+      <label>Details</label>
+      <textarea id="t-details" placeholder="Describe the problem in detail..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-sm ghost" onclick="closeModal('new-ticket-modal')">Cancel</button>
+      <button class="btn-sm primary" onclick="submitTicket()">Submit Ticket</button>
+    </div>
+  </div>
+</div>
+
+<!-- Create User Modal (admin) -->
+<div id="create-user-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <h2>👤 Create New User</h2>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="cu-name" placeholder="Full Name" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="cu-email" placeholder="email@visayasmed.com.ph" />
+    </div>
+    <div class="form-group">
+      <label>Department</label>
+      <select id="cu-dept">
+        <option>IT Department</option>
+        <option>Nursing</option>
+        <option>Radiology</option>
+        <option>Laboratory</option>
+        <option>Pharmacy</option>
+        <option>Administration</option>
+        <option>Finance</option>
+        <option>Maintenance</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Role</label>
+      <select id="cu-role">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="cu-pass" placeholder="Set initial password" />
+    </div>
+    <div class="modal-footer">
+      <button class="btn-sm ghost" onclick="closeModal('create-user-modal')">Cancel</button>
+      <button class="btn-sm primary" onclick="createUser()">Create User</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════
+//   DATA STORE
+// ═══════════════════════════════
+let db = {
+  users: [
+    {
+      id: 'u001',
+      name: 'Super Administrator',
+      email: 'superadmin@visayasmed.com.ph',
+      password: 'SuperAdmin@2026',
+      department: 'IT Department',
+      role: 'superadmin',
+      status: 'active',
+      createdBy: 'system',
+      createdAt: '2025-01-01'
+    },
+    {
+      id: 'u002',
+      name: 'System Administrator',
+      email: 'admin@visayasmed.com.ph',
+      password: 'Admin@1234',
+      department: 'IT Department',
+      role: 'admin',
+      status: 'active',
+      createdBy: 'system',
+      createdAt: '2025-01-01'
+    }
+  ],
+  tickets: [],
+  announcements: [
+    { id:'a001', title:'🔒 Scheduled Maintenance – March 1, 2026', body:'The hospital network will undergo scheduled maintenance on March 1, 2026 from 12:00 AM – 4:00 AM.', author:'Admin', date:'2026-02-26' },
+    { id:'a002', title:'🖥️ New Workstations Deployed in Ward 3 & 4', body:'Upgraded workstations have been deployed. Staff should log in using existing credentials.', author:'Admin', date:'2026-02-20' },
+    { id:'a003', title:'🔐 Password Policy Update – Action Required', body:'All staff must update their passwords by February 28, 2026.', author:'Admin', date:'2026-02-10' }
+  ]
+};
+
+let currentUser = null;
+let ticketCounter = 100;
+
+// Check for existing session on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const savedUser = localStorage.getItem('currentUser');
+  if (savedUser) {
+    currentUser = JSON.parse(savedUser);
+    enterPortal();
+  }
+});
+
+// ═══════════════════════════════
+//   AUTH
+// ═════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0) === (tab==='signin')));
+  document.getElementById('signin-form').classList.toggle('hidden', tab !== 'signin');
+  document.getElementById('signup-form').classList.toggle('hidden', tab !== 'signup');
+  clearMsgs();
+}
+
+function clearMsgs() {
+  ['login-msg','reg-msg'].forEach(id => { const el=document.getElementById(id); if(el) el.innerHTML=''; });
+}
+
+function msg(elId, text, type='error') {
+  const el = document.getElementById(elId);
+  el.innerHTML = `<div class="auth-msg ${type}">${text}</div>`;
+}
+
+function login() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  const user  = db.users.find(u => u.email === email && u.password === pass);
+  if (!user) return msg('login-msg', '❌ Invalid email or password.');
+  if (user.status === 'inactive') return msg('login-msg', '⚠️ Your account has been deactivated. Contact IT Admin.');
+  currentUser = user;
+  
+  // Save session to localStorage
+  localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  
+  enterPortal();
+}
+
+function register() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const dept  = document.getElementById('reg-dept').value;
+  const pass  = document.getElementById('reg-pass').value;
+  if (!name || !email || !dept || !pass) return msg('reg-msg', '⚠️ Please fill in all fields.');
+  if (pass.length < 8) return msg('reg-msg', '⚠️ Password must be at least 8 characters.');
+  if (db.users.find(u => u.email === email)) return msg('reg-msg', '❌ Email already registered.');
+  const newUser = {
+    id: 'u' + Date.now(),
+    name, email, password: pass, department: dept,
+    role: 'user', status: 'active',
+    createdBy: 'self', createdAt: new Date().toISOString().split('T')[0]
+  };
+  db.users.push(newUser);
+  msg('reg-msg', '✅ Account created! You can now sign in.', 'success');
+  setTimeout(() => switchTab('signin'), 1500);
+}
+
+function logout() {
+  currentUser = null;
+  localStorage.removeItem('currentUser');
+  document.getElementById('auth-screen').classList.remove('hidden');
+  document.getElementById('portal-screen').classList.add('hidden');
+  clearMsgs();
+}
+
+// ═══════════════════════════════
+//   PORTAL ENTRY
+// ═══════════════════════════════
+function enterPortal() {
+  document.getElementById('auth-screen').classList.add('hidden');
+  document.getElementById('portal-screen').classList.remove('hidden');
+  
+  // Update sidebar user info
+  document.getElementById('sb-avatar').textContent = currentUser.name.charAt(0).toUpperCase();
+  document.getElementById('sb-name').textContent = currentUser.name;
+  document.getElementById('sb-role').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+  
+  // Show admin nav if admin or superadmin
+  if (currentUser.role === 'admin' || currentUser.role === 'superadmin') {
+    document.getElementById('admin-nav').style.display = 'block';
+    document.getElementById('stat-users-card').style.display = 'block';
+  }
+  
+  // Update dashboard welcome
+  document.getElementById('dash-welcome').textContent = `Welcome back, ${currentUser.name}!`;
+  
+  // Load dashboard data
+  loadDashboard();
+  loadMyTickets();
+  loadProfile();
+  
+  if (currentUser.role === 'admin' || currentUser.role === 'superadmin') {
+    loadUsers();
+    loadAllTickets();
+  }
+}
+
+// ═══════════════════════════════
+//   PAGE NAVIGATION
+// ═══════════════════════════════
+function showPage(pageId, buttonEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  if (buttonEl) buttonEl.classList.add('active');
+}
+
+// ═══════════════════════════════
+//   DATA LOADING
+// ═══════════════════════════════
+function loadDashboard() {
+  const userTickets = db.tickets.filter(t => t.createdBy === currentUser.id);
+  const open = userTickets.filter(t => t.status === 'open').length;
+  const resolved = userTickets.filter(t => t.status === 'resolved').length;
+  const pending = userTickets.filter(t => t.status === 'pending').length;
+  
+  document.getElementById('stat-open').textContent = open;
+  document.getElementById('stat-resolved').textContent = resolved;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-users').textContent = db.users.length;
+  
+  // Update badge
+  document.getElementById('ticket-badge').textContent = open;
+  
+  // Load recent tickets
+  const tbody = document.getElementById('dash-tickets-body');
+  const recent = userTickets.slice(-5).reverse();
+  if (recent.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">No tickets yet</td></tr>';
+  } else {
+    tbody.innerHTML = recent.map(t => `
+      <tr>
+        <td>#${t.id}</td>
+        <td>${t.subject}</td>
+        <td><span class="badge-${t.priority.toLowerCase()}">${t.priority}</span></td>
+        <td><span class="status-dot ${t.status}"></span>${t.status}</td>
+        <td>${t.date}</td>
+      </tr>
+    `).join('');
+  }
+}
+
+function loadMyTickets() {
+  const tbody = document.getElementById('my-tickets-body');
+  const userTickets = db.tickets.filter(t => t.createdBy === currentUser.id);
+  if (userTickets.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">No tickets submitted</td></tr>';
+  } else {
+    tbody.innerHTML = userTickets.reverse().map(t => `
+      <tr>
+        <td>#${t.id}</td>
+        <td>${t.subject}</td>
+        <td>${t.category}</td>
+        <td><span class="badge-${t.priority.toLowerCase()}">${t.priority}</span></td>
+        <td><span class="status-dot ${t.status}"></span>${t.status}</td>
+        <td>${t.date}</td>
+      </tr>
+    `).join('');
+  }
+}
+
+function loadProfile() {
+  const info = document.getElementById('prof-info');
+  document.getElementById('prof-avatar').textContent = currentUser.name.charAt(0).toUpperCase();
+  info.innerHTML = `
+    <div class="info-row">
+      <div class="info-label">Full Name</div>
+      <div>${currentUser.name}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Email Address</div>
+      <div>${currentUser.email}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Department</div>
+      <div>${currentUser.department}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Role</div>
+      <div><span class="badge-${currentUser.role}">${currentUser.role}</span></div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Account Status</div>
+      <div><span class="status-dot ${currentUser.status}"></span>${currentUser.status}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Member Since</div>
+      <div>${currentUser.createdAt}</div>
+    </div>
+  `;
+}
+
+function loadUsers() {
+  const tbody = document.getElementById('users-body');
+  tbody.innerHTML = db.users.map(u => `
+    <tr>
+      <td>${u.name}</td>
+      <td>${u.email}</td>
+      <td>${u.department}</td>
+      <td><span class="badge-${u.role}">${u.role}</span></td>
+      <td><span class="status-dot ${u.status}"></span>${u.status}</td>
+      <td>
+        <button class="btn-sm ghost" onclick="toggleUserStatus('${u.id}')">${u.status === 'active' ? 'Deactivate' : 'Activate'}</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function loadAllTickets() {
+  const tbody = document.getElementById('all-tickets-body');
+  if (db.tickets.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">No tickets submitted</td></tr>';
+  } else {
+    tbody.innerHTML = db.tickets.reverse().map(t => {
+      const creator = db.users.find(u => u.id === t.createdBy);
+      return `
+        <tr>
+          <td>#${t.id}</td>
+          <td>${t.subject}</td>
+          <td>${creator ? creator.name : 'Unknown'}</td>
+          <td><span class="badge-${t.priority.toLowerCase()}">${t.priority}</span></td>
+          <td><span class="status-dot ${t.status}"></span>${t.status}</td>
+          <td>
+            <button class="btn-sm primary" onclick="updateTicketStatus('${t.id}')">Update</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+}
+
+// ═══════════════════════════════
+//   TICKET MANAGEMENT
+// ═══════════════════════════════
+function submitTicket() {
+  const category = document.getElementById('t-cat').value;
+  const priority = document.getElementById('t-priority').value;
+  const subject = document.getElementById('t-subject').value.trim();
+  const details = document.getElementById('t-details').value.trim();
+  
+  if (!subject || !details) {
+    alert('Please fill in all fields');
+    return;
+  }
+  
+  const ticket = {
+    id: 'T' + ticketCounter++,
+    category,
+    priority,
+    subject,
+    details,
+    status: 'open',
+    createdBy: currentUser.id,
+    date: new Date().toISOString().split('T')[0]
+  };
+  
+  db.tickets.push(ticket);
+  closeModal('new-ticket-modal');
+  loadDashboard();
+  loadMyTickets();
+  
+  // Clear form
+  document.getElementById('t-subject').value = '';
+  document.getElementById('t-details').value = '';
+}
+
+function updateTicketStatus(ticketId) {
+  const ticket = db.tickets.find(t => t.id === ticketId);
+  if (ticket) {
+    const statuses = ['open', 'pending', 'resolved'];
+    const currentIndex = statuses.indexOf(ticket.status);
+    ticket.status = statuses[(currentIndex + 1) % statuses.length];
+    loadAllTickets();
+    loadDashboard();
+  }
+}
+
+// ═══════════════════════════════
+//   USER MANAGEMENT
+// ═══════════════════════════════
+function openCreateUserModal() {
+  document.getElementById('create-user-modal').classList.remove('hidden');
+}
+
+function createUser() {
+  const name = document.getElementById('cu-name').value.trim();
+  const email = document.getElementById('cu-email').value.trim();
+  const dept = document.getElementById('cu-dept').value;
+  const role = document.getElementById('cu-role').value;
+  const pass = document.getElementById('cu-pass').value;
+  
+  if (!name || !email || !dept || !role || !pass) {
+    alert('Please fill in all fields');
+    return;
+  }
+  
+  if (db.users.find(u => u.email === email)) {
+    alert('Email already registered');
+    return;
+  }
+  
+  const newUser = {
+    id: 'u' + Date.now(),
+    name, email, department: dept, role, password: pass,
+    status: 'active', createdBy: currentUser.id,
+    createdAt: new Date().toISOString().split('T')[0]
+  };
+  
+  db.users.push(newUser);
+  closeModal('create-user-modal');
+  loadUsers();
+  document.getElementById('stat-users').textContent = db.users.length;
+  
+  // Clear form
+  ['cu-name','cu-email','cu-pass'].forEach(id => document.getElementById(id).value = '');
+}
+
+function toggleUserStatus(userId) {
+  const user = db.users.find(u => u.id === userId);
+  if (user && user.role !== 'superadmin') {
+    user.status = user.status === 'active' ? 'inactive' : 'active';
+    loadUsers();
+  }
+}
+
+// ═══════════════════════════════
+//   ANNOUNCEMENTS
+// ═══════════════════════════════
+function postAnnouncement() {
+  const title = document.getElementById('ann-title').value.trim();
+  const body = document.getElementById('ann-body').value.trim();
+  
+  if (!title || !body) {
+    document.getElementById('ann-msg').innerHTML = '<div class="auth-msg error">Please fill in all fields</div>';
+    return;
+  }
+  
+  const announcement = {
+    id: 'a' + Date.now(),
+    title, body, author: currentUser.name,
+    date: new Date().toISOString().split('T')[0]
+  };
+  
+  db.announcements.unshift(announcement);
+  document.getElementById('ann-msg').innerHTML = '<div class="auth-msg success">✅ Announcement posted successfully!</div>';
+  
+  // Clear form
+  document.getElementById('ann-title').value = '';
+  document.getElementById('ann-body').value = '';
+  
+  setTimeout(() => {
+    document.getElementById('ann-msg').innerHTML = '';
+  }, 3000);
+}
+
+// ═══════════════════════════════
+//   MODALS
+// ═══════════════════════════════
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.add('hidden');
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) {
+      overlay.classList.add('hidden');
+    }
+  });
+});
+</script>
+</body>
+</html>
