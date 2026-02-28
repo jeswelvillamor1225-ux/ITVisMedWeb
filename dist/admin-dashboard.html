@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - VISMED IT Department</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="glass-effect shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-purple-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-white text-xl font-bold">Admin Dashboard</h1>
+                        <p class="text-purple-100 text-sm">VISAYASMED IT Management</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm transition" onclick="goBack()">
+                        <i class="fas fa-arrow-left mr-2"></i>Go Back
+                    </button>
+                    <a href="admin.html" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm transition">
+                        <i class="fas fa-home mr-2"></i>Back to Portal
+                    </a>
+                    <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="glass-effect rounded-xl p-6 text-center hover-scale fade-in">
+                <i class="fas fa-users text-3xl text-white mb-4"></i>
+                <h3 class="text-white text-2xl font-bold" id="totalUsers">5</h3>
+                <p class="text-purple-100">Total Users</p>
+            </div>
+            <div class="glass-effect rounded-xl p-6 text-center hover-scale fade-in" style="animation-delay: 0.1s">
+                <i class="fas fa-user-shield text-3xl text-white mb-4"></i>
+                <h3 class="text-white text-2xl font-bold" id="adminUsers">2</h3>
+                <p class="text-purple-100">Admin Users</p>
+            </div>
+            <div class="glass-effect rounded-xl p-6 text-center hover-scale fade-in" style="animation-delay: 0.2s">
+                <i class="fas fa-ticket-alt text-3xl text-white mb-4"></i>
+                <h3 class="text-white text-2xl font-bold" id="activeTickets">12</h3>
+                <p class="text-purple-100">Active Tickets</p>
+            </div>
+            <div class="glass-effect rounded-xl p-6 text-center hover-scale fade-in" style="animation-delay: 0.3s">
+                <i class="fas fa-server text-3xl text-white mb-4"></i>
+                <h3 class="text-white text-2xl font-bold">98%</h3>
+                <p class="text-purple-100">System Health</p>
+            </div>
+        </div>
+
+        <!-- User Management Section -->
+        <div class="glass-effect rounded-2xl p-8 mb-8 fade-in" style="animation-delay: 0.4s">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-white text-2xl font-bold">
+                    <i class="fas fa-users-cog mr-3"></i>User Management
+                </h2>
+                <button onclick="showCreateUserModal()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition">
+                    <i class="fas fa-plus mr-2"></i>Create User
+                </button>
+            </div>
+
+            <!-- Users Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-white">
+                    <thead>
+                        <tr class="border-b border-white/20">
+                            <th class="text-left py-3 px-4">Email</th>
+                            <th class="text-left py-3 px-4">Role</th>
+                            <th class="text-left py-3 px-4">Modules</th>
+                            <th class="text-left py-3 px-4">Status</th>
+                            <th class="text-left py-3 px-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr class="border-b border-white/10 hover:bg-white/5 transition">
+                            <td class="py-3 px-4">admin@visayasmed.com.ph</td>
+                            <td class="py-3 px-4">
+                                <span class="bg-red-500 text-white px-2 py-1 rounded text-xs">Admin</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="text-xs text-purple-200">All Modules</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">Active</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <button onclick="editUser('admin@visayasmed.com.ph')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs mr-2">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteUser('admin@visayasmed.com.ph')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-white/10 hover:bg-white/5 transition">
+                            <td class="py-3 px-4">staff@visayasmed.com.ph</td>
+                            <td class="py-3 px-4">
+                                <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">User</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="text-xs text-purple-200">Basic, Support</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">Active</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <button onclick="editUser('staff@visayasmed.com.ph')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs mr-2">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteUser('staff@visayasmed.com.ph')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Module Management -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Create User Modal Preview -->
+            <div class="glass-effect rounded-2xl p-8 fade-in" style="animation-delay: 0.5s">
+                <h3 class="text-white text-xl font-bold mb-6">
+                    <i class="fas fa-user-plus mr-3"></i>Create New User
+                </h3>
+                <form id="createUserForm" class="space-y-4">
+                    <div>
+                        <label class="block text-white text-sm font-medium mb-2">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="newUserEmail"
+                            class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+                            placeholder="user@visayasmed.com.ph"
+                            required
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-white text-sm font-medium mb-2">Password</label>
+                        <input 
+                            type="password" 
+                            id="newUserPassword"
+                            class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+                            placeholder="Enter password"
+                            required
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-white text-sm font-medium mb-2">User Role</label>
+                        <select 
+                            id="newUserRole"
+                            class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+                        >
+                            <option value="user">Regular User</option>
+                            <option value="admin">Admin User</option>
+                        </select>
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold transition"
+                    >
+                        <i class="fas fa-user-plus mr-2"></i>Create User Account
+                    </button>
+                </form>
+            </div>
+
+            <!-- System Settings -->
+            <div class="glass-effect rounded-2xl p-8 fade-in" style="animation-delay: 0.6s">
+                <h3 class="text-white text-xl font-bold mb-6">
+                    <i class="fas fa-cogs mr-3"></i>System Settings
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-white/10 rounded-lg">
+                        <div>
+                            <h4 class="text-white font-semibold">User Registration</h4>
+                            <p class="text-purple-100 text-sm">Allow new users to register</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="userRegistration" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-white/10 rounded-lg">
+                        <div>
+                            <h4 class="text-white font-semibold">Email Notifications</h4>
+                            <p class="text-purple-100 text-sm">Send system alerts via email</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="emailNotifications" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-white/10 rounded-lg">
+                        <div>
+                            <h4 class="text-white font-semibold">Maintenance Mode</h4>
+                            <p class="text-purple-100 text-sm">Temporarily disable user access</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="maintenanceMode" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-effect mt-20">
+        <div class="container mx-auto px-6 py-6">
+            <div class="text-center text-purple-100">
+                <p>&copy; 2026 VISMED Hospital - IT Department. All rights reserved.</p>
+                <p class="text-sm mt-2">Admin Dashboard - Restricted Access</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyADJPo270xFJWb4LvdwsT0bFfBX6ZmRwEk",
+            authDomain: "website-7e897.firebaseapp.com",
+            projectId: "website-7e897",
+            storageBucket: "website-7e897.firebasestorage.app",
+            messagingSenderId: "519082781158",
+            appId: "1:519082781158:web:6bfe071df3173616bc4e27"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Go back function
+        function goBack() {
+            window.history.back();
+        }
+
+        // Check authentication and admin status
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                // Check for localStorage session as fallback
+                const savedUser = localStorage.getItem('currentUser');
+                if (!savedUser) {
+                    window.location.href = 'admin.html';
+                    return;
+                }
+            }
+
+            const email = user ? user.email : JSON.parse(localStorage.getItem('currentUser')).email;
+            if (email !== 'admin@visayasmed.com.ph' && email !== 'superadmin@visayasmed.com.ph' && !email.includes('admin@')) {
+                // Not admin, redirect to main site
+                alert('Access denied. Admin privileges required.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Display admin email
+            document.getElementById('adminEmailDisplay').textContent = email;
+        });
+
+        // Logout function
+        function logout() {
+            auth.signOut().then(() => {
+                // Clear localStorage session
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('adminEmail');
+                localStorage.removeItem('adminRedirected');
+                window.location.href = 'admin.html';
+            }).catch(() => {
+                // Fallback for Firebase auth issues
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('adminEmail');
+                localStorage.removeItem('adminRedirected');
+                window.location.href = 'admin.html';
+            });
+        }
+
+        // Create user function
+        document.getElementById('createUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('newUserEmail').value;
+            const password = document.getElementById('newUserPassword').value;
+            const role = document.getElementById('newUserRole').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating User...';
+            submitBtn.disabled = true;
+
+            try {
+                // Create user in Firebase
+                const result = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Store user role and modules
+                const modules = role === 'admin' 
+                    ? ['admin', 'user-management', 'system-settings', 'reports', 'basic', 'support', 'billing', 'inventory', 'analytics']
+                    : ['basic', 'support'];
+                
+                localStorage.setItem(`userRoles_${result.user.uid}`, JSON.stringify({
+                    isAdmin: role === 'admin',
+                    modules: modules
+                }));
+
+                // Add to users table (in real app, this would be stored in database)
+                addUsersToTable(email, role, modules);
+                
+                // Reset form
+                document.getElementById('createUserForm').reset();
+                
+                alert('User created successfully!');
+                
+            } catch (error) {
+                alert('Error creating user: ' + error.message);
+            } finally {
+                // Reset button state
+                submitBtn.innerHTML = '<i class="fas fa-user-plus mr-2"></i>Create User Account';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Add user to table function
+        function addUsersToTable(email, role, modules) {
+            const tbody = document.getElementById('usersTableBody');
+            const row = document.createElement('tr');
+            row.className = 'border-b border-white/10 hover:bg-white/5 transition';
+            
+            const roleBadge = role === 'admin' 
+                ? '<span class="bg-red-500 text-white px-2 py-1 rounded text-xs">Admin</span>'
+                : '<span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">User</span>';
+            
+            const modulesText = role === 'admin' 
+                ? '<span class="text-xs text-purple-200">All Modules</span>'
+                : `<span class="text-xs text-purple-200">${modules.join(', ')}</span>`;
+            
+            row.innerHTML = `
+                <td class="py-3 px-4">${email}</td>
+                <td class="py-3 px-4">${roleBadge}</td>
+                <td class="py-3 px-4">${modulesText}</td>
+                <td class="py-3 px-4">
+                    <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">Active</span>
+                </td>
+                <td class="py-3 px-4">
+                    <button onclick="editUser('${email}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs mr-2">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button onclick="deleteUser('${email}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            
+            tbody.appendChild(row);
+        }
+
+        // Edit user function
+        function editUser(email) {
+            alert(`Edit user: ${email}\n(This would open an edit modal in a full implementation)`);
+        }
+
+        // Delete user function
+        function deleteUser(email) {
+            if (confirm(`Are you sure you want to delete user: ${email}?`)) {
+                alert(`User ${email} deleted\n(This would delete from database in a full implementation)`);
+                // In real implementation, this would remove from Firebase and update table
+            }
+        }
+
+        // Show create user modal (placeholder function)
+        function showCreateUserModal() {
+            document.getElementById('newUserEmail').focus();
+        }
+    </script>
+</body>
+</html>
