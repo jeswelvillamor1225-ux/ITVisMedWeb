@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VISAYASMED Hospital – IT Department</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --blue: #1a3a6e;
+    --accent: #1e6fcf;
+    --bright: #3b9eff;
+    --teal: #0ea5b0;
+    --light: #f0f5ff;
+    --white: #ffffff;
+    --text: #1e2a3a;
+    --muted: #6b7c93;
+    --border: #d4dff0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--navy);
+    color: #a8bcd4;
+    font-size: 0.78rem;
+    padding: 0.55rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .topbar-left { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .topbar-left span { display: flex; align-items: center; gap: 0.4rem; }
+  .topbar-left svg { width: 14px; height: 14px; fill: var(--bright); }
+  .topbar-right { display: flex; gap: 1.2rem; align-items: center; }
+  .topbar-right a {
+    color: #a8bcd4; text-decoration: none; font-size: 0.78rem;
+    display: flex; align-items: center; gap: 0.35rem;
+    transition: color .2s;
+  }
+  .topbar-right a:hover { color: var(--white); }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem;
+    height: 72px;
+    box-shadow: 0 2px 20px rgba(10,22,40,.08);
+  }
+
+  .logo {
+    display: flex; align-items: center; gap: 0.75rem; text-decoration: none;
+  }
+  .logo-icon {
+    width: 46px; height: 46px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-icon svg { width: 26px; height: 26px; fill: white; }
+  .logo-text { line-height: 1.1; }
+  .logo-text strong { display: block; font-size: 1.25rem; font-weight: 800; color: var(--navy); letter-spacing: -.5px; }
+  .logo-text span { font-size: 0.65rem; font-weight: 500; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
+
+  .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+  .nav-links a {
+    font-size: 0.875rem; font-weight: 500;
+    color: var(--text); text-decoration: none;
+    padding: 0.5rem 0.9rem; border-radius: 6px;
+    transition: background .2s, color .2s;
+  }
+  .nav-links a:hover { background: var(--light); color: var(--accent); }
+  .nav-links a.active { color: var(--accent); font-weight: 600; }
+
+  .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+  .btn-outline {
+    border: 1.5px solid var(--accent); color: var(--accent);
+    padding: 0.5rem 1.1rem; border-radius: 7px; font-size: 0.85rem;
+    font-weight: 600; text-decoration: none; transition: all .2s; font-family: inherit;
+    cursor: pointer; background: transparent;
+  }
+  .btn-outline:hover { background: var(--accent); color: white; }
+  .btn-primary {
+    background: var(--accent); color: white;
+    padding: 0.55rem 1.3rem; border-radius: 7px; font-size: 0.85rem;
+    font-weight: 600; text-decoration: none; transition: all .2s;
+    cursor: pointer; border: none; font-family: inherit;
+  }
+  .btn-primary:hover { background: var(--blue); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(30,111,207,.35); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    background: var(--navy);
+    overflow: hidden;
+    min-height: 480px;
+    display: flex; align-items: center;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(30,111,207,.35) 0%, transparent 70%),
+      linear-gradient(135deg, #0a1628 0%, #0e2347 100%);
+  }
+  /* Grid lines decoration */
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(59,158,255,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,158,255,.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 80%);
+  }
+  .hero-glow {
+    position: absolute; top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14,165,176,.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 1200px; margin: 0 auto; padding: 4rem 2rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+  }
+  .hero-breadcrumb {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.8rem; color: #7fa8d0; margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .hero-breadcrumb a { color: var(--bright); text-decoration: none; }
+  .hero-breadcrumb span { color: #4a6282; }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(59,158,255,.15); border: 1px solid rgba(59,158,255,.3);
+    color: var(--bright); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 0.35rem 0.85rem; border-radius: 50px; margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    color: white;
+    line-height: 1.12;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 em { color: var(--bright); font-style: normal; }
+  .hero p {
+    font-size: 1rem; color: #8fb2d4; line-height: 1.75;
+    max-width: 480px; margin-bottom: 2rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-hero-primary {
+    background: var(--accent); color: white;
+    padding: 0.75rem 1.8rem; border-radius: 8px;
+    font-size: 0.9rem; font-weight: 600; text-decoration: none;
+    transition: all .25s; display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-hero-primary:hover { background: var(--bright); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(59,158,255,.4); }
+  .btn-hero-outline {
+    border: 1.5px solid rgba(255,255,255,.25); color: white;
+    padding: 0.75rem 1.8rem; border-radius: 8px;
+    font-size: 0.9rem; font-weight: 500; text-decoration: none;
+    transition: all .25s;
+  }
+  .btn-hero-outline:hover { border-color: white; background: rgba(255,255,255,.08); }
+
+  /* Hero stats */
+  .hero-stats {
+    display: flex; gap: 2rem; margin-top: 2.5rem; flex-wrap: wrap;
+  }
+  .hero-stat strong {
+    display: block; font-size: 1.8rem; font-weight: 800; color: white;
+    line-height: 1;
+  }
+  .hero-stat span { font-size: 0.78rem; color: #6b8fb4; font-weight: 500; margin-top: 0.2rem; display: block; }
+
+  /* Hero right – floating cards */
+  .hero-right { display: flex; justify-content: center; align-items: center; }
+  .hero-cards {
+    position: relative; width: 340px; height: 360px;
+  }
+  .hcard {
+    position: absolute; background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(12px);
+    border-radius: 14px; padding: 1.25rem 1.5rem;
+    color: white;
+  }
+  .hcard-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .hcard h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .hcard p { font-size: 0.75rem; color: #8fb2d4; }
+  .hcard:nth-child(1) { top: 0; left: 0; width: 200px; animation: float 5s ease-in-out infinite; }
+  .hcard:nth-child(2) { top: 100px; right: 0; width: 190px; animation: float 5s ease-in-out infinite 1.5s; }
+  .hcard:nth-child(3) { bottom: 0; left: 40px; width: 210px; animation: float 5s ease-in-out infinite 3s; }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* ── SECTION WRAPPER ── */
+  .section { padding: 5rem 2rem; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 3.5rem; }
+  .section-tag {
+    display: inline-block; font-size: 0.72rem; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent); background: rgba(30,111,207,.08);
+    padding: 0.35rem 0.9rem; border-radius: 50px; margin-bottom: 0.9rem;
+    border: 1px solid rgba(30,111,207,.2);
+  }
+  .section-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    color: var(--navy); line-height: 1.2;
+    margin-bottom: 0.8rem;
+  }
+  .section-header p { color: var(--muted); font-size: 0.95rem; max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+  /* ── SERVICES ── */
+  .services { background: var(--light); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .service-card {
+    background: white; border-radius: 14px;
+    padding: 2rem; border: 1px solid var(--border);
+    transition: all .3s; cursor: default; position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 4px; height: 0;
+    background: linear-gradient(to bottom, var(--accent), var(--teal));
+    transition: height .35s;
+  }
+  .service-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(10,22,40,.1); border-color: rgba(30,111,207,.2); }
+  .service-card:hover::before { height: 100%; }
+  .svc-icon {
+    width: 52px; height: 52px; border-radius: 12px;
+    background: rgba(30,111,207,.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 1.2rem;
+    transition: background .3s;
+  }
+  .service-card:hover .svc-icon { background: rgba(30,111,207,.15); }
+  .service-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+  .service-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+  .svc-link {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    color: var(--accent); font-size: 0.82rem; font-weight: 600;
+    text-decoration: none; margin-top: 1rem; transition: gap .2s;
+  }
+  .svc-link:hover { gap: 0.6rem; }
+
+  /* ── TEAM ── */
+  .team-grid {
+    display: flex; flex-direction: column; gap: 2rem;
+    max-width: 1000px; margin: 0 auto;
+  }
+  .team-row {
+    display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+  }
+  .team-card {
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--border); background: white;
+    transition: all .3s; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 1.5rem;
+    min-width: 200px;
+  }
+  .team-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(10,22,40,.1); }
+  .team-avatar {
+    width: 120px; height: 120px; min-width: 120px;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; color: white;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-bottom: 1rem;
+  }
+  .team-avatar img {
+    width: 120%;
+    height: 120%;
+    object-fit: contain;
+    object-position: center center;
+  }
+  .team-info { text-align: center; padding: 0; }
+  .team-info h4 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+  .team-info span { font-size: 0.9rem; color: var(--accent); font-weight: 600; display: block; margin-bottom: 0.5rem; }
+  .team-info p { font-size: 0.85rem; color: var(--muted); margin: 0; }
+  
+  .org-connector {
+    width: 2px; height: 2rem; background: var(--border); margin: 0 auto;
+  }
+
+  /* ── ADMIN PORTAL ── */
+  .admin-grid {
+    display: flex; justify-content: center;
+  }
+  .admin-card {
+    background: white; border-radius: 16px; padding: 2rem;
+    border: 1px solid var(--border); max-width: 500px; width: 100%;
+    box-shadow: 0 8px 32px rgba(10,22,40,.08);
+  }
+  .admin-card-header {
+    text-align: center; margin-bottom: 2rem;
+  }
+  .admin-card-header h3 {
+    font-size: 1.5rem; font-weight: 700; color: var(--navy);
+    margin: 0 0 0.5rem 0;
+  }
+  .admin-card-header p {
+    color: var(--muted); margin: 0;
+  }
+  
+  .admin-dashboard {
+    background: white; border-radius: 16px; padding: 2rem;
+    border: 1px solid var(--border); max-width: 1000px; width: 100%;
+    box-shadow: 0 8px 32px rgba(10,22,40,.08);
+  }
+  .admin-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+  }
+  .admin-header h3 {
+    font-size: 1.5rem; font-weight: 700; color: var(--navy); margin: 0;
+  }
+  
+  .admin-tabs {
+    display: flex; gap: 0.5rem; margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-btn {
+    background: none; border: none; padding: 1rem 1.5rem;
+    color: var(--muted); font-weight: 500; cursor: pointer;
+    border-bottom: 2px solid transparent; transition: all .2s;
+  }
+  .tab-btn.active {
+    color: var(--accent); border-bottom-color: var(--accent);
+  }
+  .tab-btn:hover { color: var(--navy); }
+  
+  .tab-content {
+    display: none;
+  }
+  .tab-content.active {
+    display: block;
+  }
+  
+  .admin-section {
+    margin-bottom: 2rem;
+  }
+  .admin-section h4 {
+    font-size: 1.2rem; font-weight: 600; color: var(--navy);
+    margin: 0 0 1.5rem 0;
+  }
+  
+  .form-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  
+  .permission-checkboxes {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .permission-checkboxes label {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.9rem; color: var(--navy);
+  }
+  
+  .user-list {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .user-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem; background: var(--light); border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .user-info {
+    display: flex; flex-direction: column; gap: 0.25rem;
+  }
+  .user-info strong {
+    font-weight: 600; color: var(--navy);
+  }
+  .user-info span {
+    font-size: 0.85rem; color: var(--muted);
+  }
+  .user-actions {
+    display: flex; gap: 0.5rem;
+  }
+  .btn-sm {
+    padding: 0.5rem 1rem; font-size: 0.85rem;
+    background: var(--accent); color: white; border: none;
+    border-radius: 6px; cursor: pointer; transition: all .2s;
+  }
+  .btn-sm:hover { background: var(--navy); }
+  .btn-sm.btn-danger {
+    background: var(--warning);
+  }
+  .btn-sm.btn-danger:hover { background: #dc2626; }
+  
+  .permission-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;
+  }
+  .permission-category {
+    background: var(--light); padding: 1rem; border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .permission-category h5 {
+    font-weight: 600; color: var(--navy); margin: 0 0 1rem 0;
+  }
+  .permission-category label {
+    display: block; margin-bottom: 0.5rem;
+    font-size: 0.9rem; color: var(--navy);
+  }
+
+  /* ── DASHBOARD ── */
+  .dashboard-grid {
+    display: flex; flex-direction: column; gap: 2rem;
+  }
+  .dashboard-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;
+  }
+  .status-card {
+    background: white; border-radius: 12px; padding: 1.5rem;
+    border: 1px solid var(--border); display: flex; align-items: center; gap: 1rem;
+    transition: all .2s;
+  }
+  .status-card:hover { box-shadow: 0 4px 12px rgba(10,22,40,.1); }
+  .status-icon {
+    width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; flex-shrink: 0;
+  }
+  .status-icon.online { background: rgba(34,197,94,.1); }
+  .status-icon.warning { background: rgba(251,146,60,.1); }
+  .status-icon.offline { background: rgba(239,68,68,.1); }
+  .status-info h3 { font-size: 1rem; font-weight: 600; color: var(--navy); margin: 0 0 0.25rem 0; }
+  .status-info p { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.5rem 0; }
+  .status-time { font-size: 0.8rem; color: var(--accent); }
+  
+  .dashboard-section {
+    background: white; border-radius: 12px; padding: 1.5rem;
+    border: 1px solid var(--border);
+  }
+  .dashboard-section h3 {
+    font-size: 1.1rem; font-weight: 600; color: var(--navy);
+    margin: 0 0 1rem 0; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .action-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;
+  }
+  .action-btn {
+    background: var(--light); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    cursor: pointer; transition: all .2s; font-size: 0.9rem; color: var(--navy);
+  }
+  .action-btn:hover { background: var(--accent); color: white; transform: translateY(-2px); }
+  .action-icon { font-size: 1.5rem; }
+  
+  .activity-list {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .activity-item {
+    display: flex; align-items: flex-start; gap: 1rem; padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-icon {
+    width: 36px; height: 36px; border-radius: 50%; background: var(--light);
+    display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .activity-details { flex: 1; }
+  .activity-details strong { font-size: 0.95rem; color: var(--navy); display: block; margin-bottom: 0.25rem; }
+  .activity-details p { font-size: 0.85rem; color: var(--muted); margin: 0 0 0.25rem 0; }
+  .activity-time { font-size: 0.75rem; color: var(--accent); }
+  
+  .metrics-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;
+  }
+  .metric-card {
+    background: var(--light); border-radius: 8px; padding: 1rem; text-align: center;
+    border: 1px solid var(--border);
+  }
+  .metric-value {
+    font-size: 1.8rem; font-weight: 700; color: var(--navy);
+    margin-bottom: 0.25rem;
+  }
+  .metric-label {
+    font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;
+  }
+  .metric-trend {
+    font-size: 0.8rem; font-weight: 600;
+  }
+  .metric-trend.positive { color: var(--success); }
+  .metric-trend.negative { color: var(--warning); }
+
+  /* ── ANNOUNCEMENTS ── */
+  .announcements { background: var(--light); }
+  .ann-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+  .ann-list { display: flex; flex-direction: column; gap: 1rem; }
+  .ann-card {
+    background: white; border-radius: 12px; padding: 1.5rem;
+    border: 1px solid var(--border); display: flex; gap: 1.25rem;
+    align-items: flex-start; transition: box-shadow .2s;
+  }
+  .ann-card:hover { box-shadow: 0 6px 24px rgba(10,22,40,.08); }
+  .ann-date {
+    min-width: 50px; text-align: center;
+    background: var(--accent); color: white;
+    border-radius: 8px; padding: 0.5rem 0.25rem;
+  }
+  .ann-date strong { display: block; font-size: 1.3rem; font-weight: 800; line-height: 1; }
+  .ann-date span { font-size: 0.68rem; font-weight: 500; text-transform: uppercase; letter-spacing: .05em; }
+  .ann-body h4 { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.3rem; }
+  .ann-body p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .ann-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 600;
+    padding: 0.2rem 0.6rem; border-radius: 50px; margin-bottom: 0.4rem;
+  }
+  .ann-tag.maintenance { background: #fff3cd; color: #856404; }
+  .ann-tag.upgrade { background: #d1ecf1; color: #0c5460; }
+  .ann-tag.security { background: #f8d7da; color: #721c24; }
+  .ann-tag.training { background: #d4edda; color: #155724; }
+
+  /* Sidebar quick links */
+  .sidebar-widget {
+    background: white; border-radius: 12px; padding: 1.5rem;
+    border: 1px solid var(--border);
+  }
+  .sidebar-widget h3 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+  .quick-link {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 0; border-bottom: 1px solid #f0f5ff;
+    text-decoration: none; color: var(--text);
+    font-size: 0.85rem; font-weight: 500;
+    transition: color .2s;
+  }
+  .quick-link:last-child { border-bottom: none; }
+  .quick-link:hover { color: var(--accent); }
+  .quick-link-icon {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: rgba(30,111,207,.08); display: flex;
+    align-items: center; justify-content: center; font-size: 1rem;
+  }
+
+  /* ── CONTACT ── */
+  .contact-section {
+    background: var(--navy);
+    color: white;
+    padding: 5rem 2rem;
+    position: relative; overflow: hidden;
+  }
+  .contact-section::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 0% 50%, rgba(14,165,176,.2) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 100% 50%, rgba(30,111,207,.25) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .contact-grid {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .contact-left h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .contact-left h2 em { color: var(--bright); font-style: normal; }
+  .contact-left p { color: #8fb2d4; font-size: 0.95rem; line-height: 1.75; margin-bottom: 2rem; }
+  .contact-details { display: flex; flex-direction: column; gap: 1.2rem; }
+  .contact-item { display: flex; gap: 1rem; align-items: flex-start; }
+  .contact-item-icon {
+    width: 40px; height: 40px; min-width: 40px;
+    background: rgba(59,158,255,.15); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-size: 1rem;
+  }
+  .contact-item-text strong { display: block; font-size: 0.82rem; color: var(--bright); font-weight: 600; margin-bottom: 0.1rem; text-transform: uppercase; letter-spacing: .06em; }
+  .contact-item-text span { font-size: 0.9rem; color: #c8d8ea; }
+
+  /* Contact form */
+  .contact-form {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 16px; padding: 2rem;
+    backdrop-filter: blur(8px);
+  }
+  .contact-form h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .form-group label { font-size: 0.8rem; font-weight: 500; color: #8fb2d4; }
+  .form-group input, .form-group select, .form-group textarea {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15); border-radius: 7px;
+    padding: 0.65rem 0.9rem; color: white;
+    font-family: 'Sora', sans-serif; font-size: 0.875rem;
+    transition: border-color .2s, background .2s;
+    outline: none;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: #4a6282; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--bright); background: rgba(255,255,255,.12);
+  }
+  .form-group select option { background: var(--navy); color: white; }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #060e1c;
+    color: #8fb2d4; font-size: 0.83rem;
+    padding: 3rem 2rem 1.5rem;
+  }
+  .footer-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .footer-about .logo { margin-bottom: 1rem; }
+  .footer-about p { line-height: 1.7; color: #6b8fb4; font-size: 0.82rem; }
+  .footer-col h4 {
+    color: white; font-size: 0.85rem; font-weight: 700;
+    margin-bottom: 1rem; text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  .footer-col a {
+    display: block; color: #6b8fb4; text-decoration: none;
+    margin-bottom: 0.6rem; transition: color .2s;
+  }
+  .footer-col a:hover { color: var(--bright); }
+  .footer-bottom {
+    max-width: 1200px; margin: 1.25rem auto 0;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 0.5rem;
+  }
+  .footer-bottom span { color: #3f5470; }
+
+  /* ── LOGIN MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    display: none; align-items: center; justify-content: center;
+    z-index: 1000; backdrop-filter: blur(4px);
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: white; border-radius: 16px; padding: 2.5rem;
+    width: 90%; max-width: 420px; position: relative;
+    box-shadow: 0 20px 60px rgba(10,22,40,.3);
+    animation: modalSlide 0.3s ease-out;
+  }
+  @keyframes modalSlide {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .modal-close {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    background: var(--light); border: none; width: 36px; height: 36px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all .2s; color: var(--muted);
+  }
+  .modal-close:hover { background: var(--border); color: var(--text); }
+  .modal-header { text-align: center; margin-bottom: 2rem; }
+  .modal-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem; color: var(--navy); margin-bottom: 0.5rem;
+  }
+  .modal-header p { color: var(--muted); font-size: 0.9rem; }
+  .form-group { margin-bottom: 1.25rem; }
+  .form-group label {
+    display: block; font-size: 0.85rem; font-weight: 600;
+    color: var(--text); margin-bottom: 0.5rem;
+  }
+  .form-group input {
+    width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border);
+    border-radius: 8px; font-size: 0.9rem; font-family: inherit;
+    transition: border-color .2s, box-shadow .2s; outline: none;
+  }
+  .form-group input:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 3px rgba(30,111,207,.1);
+  }
+  .form-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+  .form-options label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text); }
+  .form-options a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+  .form-options a:hover { text-decoration: underline; }
+  .btn-login {
+    width: 100%; background: var(--accent); color: white;
+    padding: 0.85rem; border: none; border-radius: 8px;
+    font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    transition: all .2s; font-family: inherit;
+  }
+  .btn-login:hover { background: var(--blue); transform: translateY(-1px); }
+  .btn-login:active { transform: translateY(0); }
+
+  /* ── UTILITY ── */
+  .divider { height: 1px; background: var(--border); margin: 0; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .hero-content { 
+      grid-template-columns: 1fr; 
+      text-align: center;
+      gap: 2rem;
+    }
+    .hero-right { display: none; }
+    .hero-stats { justify-content: center; }
+    .services-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .team-row { gap: 2rem; }
+    .ann-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .nav-links { gap: 0.5rem; }
+    .nav-links a { padding: 0.5rem 0.7rem; font-size: 0.8rem; }
+  }
+
+  @media (max-width: 768px) {
+    /* Navigation */
+    nav { 
+      padding: 0 1rem; 
+      height: auto;
+      flex-wrap: wrap;
+      padding: 1rem;
+    }
+    .nav-links { 
+      display: none; 
+      order: 3;
+      width: 100%;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .nav-links.active {
+      display: flex;
+    }
+    .mobile-menu-toggle {
+      display: block;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--navy);
+      padding: 0.5rem;
+    }
+    .nav-actions { 
+      gap: 0.5rem; 
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      order: 4;
+      margin-top: 0.5rem;
+    }
+    .nav-actions button {
+      font-size: 0.8rem;
+      padding: 0.4rem 0.8rem;
+    }
+
+    /* Top Bar */
+    .topbar { 
+      padding: 0.5rem 1rem; 
+      font-size: 0.7rem;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .topbar-left { 
+      gap: 1rem; 
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .topbar-right { 
+      gap: 1rem; 
+      justify-content: center;
+    }
+
+    /* Hero Section */
+    .hero { min-height: 400px; }
+    .hero-content { padding: 3rem 1rem; }
+    .hero h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); }
+    .hero p { font-size: 0.9rem; }
+    .hero-actions { justify-content: center; }
+    .hero-stats { 
+      gap: 1.5rem; 
+      justify-content: center;
+      text-align: center;
+    }
+    .hero-stat strong { font-size: 1.5rem; }
+
+    /* Sections */
+    .section { padding: 3rem 1rem; }
+    .section-header { margin-bottom: 2rem; }
+    .section-header h2 { font-size: clamp(1.5rem, 4vw, 2rem); }
+
+    /* Services */
+    .services-grid { 
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+      gap: 1rem;
+    }
+    .service-card { padding: 1.5rem; }
+    .svc-icon { 
+      width: 48px; 
+      height: 48px; 
+      font-size: 1.2rem; 
+    }
+
+    /* Team */
+    .team-grid { gap: 1.5rem; }
+    .team-row { 
+      flex-direction: column; 
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .team-card { 
+      min-width: auto; 
+      width: 100%;
+      max-width: 300px;
+      padding: 1.2rem;
+    }
+    .team-avatar { 
+      width: 100px; 
+      height: 100px; 
+      min-width: 100px;
+      font-size: 1.5rem;
+    }
+
+    /* Announcements */
+    .ann-grid { gap: 1.5rem; }
+    .ann-card { 
+      flex-direction: column; 
+      text-align: left;
+      padding: 1rem;
+    }
+    .ann-date { 
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    /* Contact */
+    .contact-grid { gap: 2rem; }
+    .contact-left { text-align: center; }
+    .contact-item { 
+      flex-direction: column; 
+      text-align: center;
+      gap: 0.5rem;
+    }
+    .contact-form { padding: 1.5rem; }
+
+    /* Footer */
+    .footer-grid { 
+      grid-template-columns: 1fr; 
+      gap: 2rem;
+      text-align: center;
+    }
+    .footer-col a { display: block; padding: 0.25rem 0; }
+    .footer-bottom { 
+      flex-direction: column; 
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    /* Forms */
+    .form-row { grid-template-columns: 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { font-size: 0.9rem; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-size: 0.9rem;
+      padding: 0.7rem;
+    }
+
+    /* Modal */
+    .modal { 
+      margin: 1rem; 
+      max-width: calc(100% - 2rem);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header { padding: 1.5rem 1rem; }
+    .modal-body { padding: 1rem; }
+    .modal-footer { padding: 1rem; }
+  }
+
+  @media (max-width: 480px) {
+    /* Top Bar */
+    .topbar { 
+      font-size: 0.65rem; 
+      padding: 0.4rem 0.8rem;
+    }
+    .topbar-left { 
+      gap: 0.8rem; 
+      flex-direction: column;
+      align-items: center;
+    }
+    .topbar-right { gap: 0.8rem; }
+
+    /* Navigation */
+    nav { padding: 0.8rem; }
+    .logo-icon { 
+      width: 38px; 
+      height: 38px; 
+    }
+    .logo-icon svg { 
+      width: 22px; 
+      height: 22px; 
+    }
+    .logo-text strong { font-size: 1rem; }
+    .logo-text span { font-size: 0.55rem; }
+    .nav-actions button { 
+      font-size: 0.75rem; 
+      padding: 0.35rem 0.7rem;
+    }
+
+    /* Hero */
+    .hero { min-height: 350px; }
+    .hero-content { padding: 2rem 0.8rem; }
+    .hero h1 { font-size: clamp(1.5rem, 6vw, 2rem); }
+    .hero p { 
+      font-size: 0.85rem; 
+      line-height: 1.6;
+    }
+    .hero-actions { 
+      flex-direction: column; 
+      gap: 0.8rem;
+      align-items: center;
+    }
+    .btn-hero-primary,
+    .btn-hero-outline {
+      width: 100%;
+      max-width: 250px;
+      text-align: center;
+      justify-content: center;
+    }
+    .hero-stats { 
+      flex-direction: column; 
+      gap: 1rem;
+    }
+    .hero-stat strong { font-size: 1.3rem; }
+    .hero-stat span { font-size: 0.7rem; }
+
+    /* Sections */
+    .section { padding: 2rem 0.8rem; }
+    .section-header { margin-bottom: 1.5rem; }
+    .section-tag { 
+      font-size: 0.65rem; 
+      padding: 0.3rem 0.7rem;
+    }
+    .section-header h2 { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+    .section-header p { font-size: 0.85rem; }
+
+    /* Services */
+    .services-grid { 
+      grid-template-columns: 1fr; 
+      gap: 1rem;
+    }
+    .service-card { 
+      padding: 1.2rem; 
+      text-align: center;
+    }
+    .svc-icon { 
+      width: 44px; 
+      height: 44px; 
+      font-size: 1.1rem; 
+      margin: 0 auto 1rem;
+    }
+    .service-card h3 { font-size: 0.9rem; }
+    .service-card p { font-size: 0.8rem; }
+    .svc-link { 
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    /* Team */
+    .team-grid { gap: 1rem; }
+    .team-card { 
+      padding: 1rem; 
+      min-width: auto;
+    }
+    .team-avatar { 
+      width: 80px; 
+      height: 80px; 
+      min-width: 80px;
+      font-size: 1.2rem;
+    }
+    .team-info h4 { font-size: 0.9rem; }
+    .team-info span { font-size: 0.75rem; }
+    .team-info p { font-size: 0.7rem; }
+
+    /* Announcements */
+    .ann-card { 
+      padding: 0.8rem; 
+      border-radius: 8px;
+    }
+    .ann-date strong { font-size: 1.2rem; }
+    .ann-date span { font-size: 0.7rem; }
+    .ann-tag { 
+      font-size: 0.65rem; 
+      padding: 0.2rem 0.5rem;
+    }
+    .ann-card h4 { font-size: 0.85rem; }
+    .ann-card p { font-size: 0.75rem; }
+
+    /* Sidebar */
+    .sidebar-widget { 
+      padding: 1rem; 
+      border-radius: 8px;
+    }
+    .sidebar-widget h3 { font-size: 0.9rem; }
+    .quick-link { 
+      padding: 0.6rem 0.8rem; 
+      font-size: 0.8rem;
+    }
+    .quick-link-icon { font-size: 0.9rem; }
+
+    /* Contact */
+    .contact-left { padding: 1rem; }
+    .contact-left h2 { font-size: 1.3rem; }
+    .contact-left p { font-size: 0.85rem; }
+    .contact-item { 
+      padding: 0.8rem; 
+      border-radius: 8px;
+    }
+    .contact-item-icon { font-size: 1.2rem; }
+    .contact-item-text strong { font-size: 0.85rem; }
+    .contact-item-text span { font-size: 0.75rem; }
+    .contact-form { 
+      padding: 1rem; 
+      border-radius: 8px;
+    }
+    .contact-form h3 { font-size: 1rem; }
+    .form-group label { font-size: 0.8rem; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-size: 0.8rem;
+      padding: 0.6rem;
+      border-radius: 6px;
+    }
+    .btn-primary { 
+      font-size: 0.8rem; 
+      padding: 0.7rem;
+    }
+
+    /* Footer */
+    .footer-grid { gap: 1.5rem; }
+    .footer-about p { font-size: 0.8rem; }
+    .footer-col h4 { font-size: 0.9rem; }
+    .footer-col a { font-size: 0.8rem; }
+    .footer-bottom { 
+      font-size: 0.7rem; 
+      padding: 1rem 0;
+    }
+
+    /* Modal */
+    .modal { 
+      margin: 0.5rem; 
+      max-width: calc(100% - 1rem);
+      border-radius: 8px;
+    }
+    .modal-header h2 { font-size: 1.1rem; }
+    .modal-header p { font-size: 0.8rem; }
+    .form-group { margin-bottom: 0.8rem; }
+    .btn-login { 
+      font-size: 0.8rem; 
+      padding: 0.7rem;
+    }
+
+    /* Buttons */
+    .btn-outline,
+    .btn-primary {
+      font-size: 0.75rem;
+      padding: 0.4rem 0.8rem;
+    }
+
+    /* Animations */
+    .fade-in {
+      animation-duration: 0.5s;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .hero h1 { font-size: 1.4rem; }
+    .section-header h2 { font-size: 1.2rem; }
+    .service-card { padding: 1rem; }
+    .team-card { padding: 0.8rem; }
+    .contact-form { padding: 0.8rem; }
+  }
+
+  @media (max-height: 500px) and (orientation: landscape) {
+    .hero { min-height: 300px; }
+    .hero-content { padding: 1.5rem 1rem; }
+    .section { padding: 2rem 1rem; }
+    .modal { max-height: 95vh; }
+  }
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .logo-icon svg,
+    .hero-grid,
+    .svc-icon {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    .service-card:hover,
+    .team-card:hover,
+    .ann-card:hover {
+      transform: none;
+    }
+    
+    .btn-primary:hover,
+    .btn-outline:hover {
+      transform: none;
+    }
+    
+    .nav-links a:hover {
+      background: transparent;
+    }
+  }
+
+  @media print {
+    .topbar,
+    .nav-actions,
+    .hero-actions,
+    .contact-form,
+    .modal,
+    footer {
+      display: none;
+    }
+    
+    .hero {
+      background: white;
+      color: black;
+      min-height: auto;
+    }
+    
+    .section {
+      padding: 1rem 0;
+      page-break-inside: avoid;
+    }
+    
+    .service-card,
+    .team-card,
+    .ann-card {
+      break-inside: avoid;
+      box-shadow: none;
+      border: 1px solid #ccc;
+    }
+  }
+
+  /* Scroll fade-in */
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s, transform .6s; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span>
+      <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.53 15.53 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C9.93 21 3 14.07 3 5.5a1 1 0 0 1 1-1H8a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.25 1.01z"/></svg>
+      (+32) 253-1901
+    </span>
+    <span>
+      <svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 7L4 6v.01L12 13l8-6.99V6z"/></svg>
+      it@visayasmed.com.ph
+    </span>
+    <span>Help Desk: Mon–Sun 8AM–5PM</span>
+  </div>
+  <div class="topbar-right">
+    <a href="#">🔔 Alerts</a>
+    <a href="#" onclick="openLoginModal(event)">👤 Staff Login</a>
+  </div>
+</div>
+
+<!-- NAVIGATION -->
+<nav>
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8v.01l-8 4-8-4V8l8-3.82zM4 9.78l7 3.5V19.4l-7-3.5V9.78zm9 10.62V13.28l7-3.5v6.12l-7 3.5z"/></svg>
+          </div>
+          <div class="logo-text">
+            <strong>VISMED</strong>
+            <span>IT Department</span>
+          </div>
+        </a>
+
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+          ☰
+        </button>
+
+        <div class="nav-links" id="navLinks">
+    <a href="#" class="active">Home</a>
+    <a href="#services">Services</a>
+    <a href="#team">Our Team</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#admin-portal">Admin Portal</a>
+    <a href="#announcements">Announcements</a>
+    <a href="#contact">Contact Us</a>
+  </div>
+
+  <div class="nav-actions">
+    <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Submit Ticket</button>
+    <a href="admin.html" class="btn-primary">IT Portal</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-breadcrumb">
+        <a href="#">🏠 Home</a>
+        <span>/</span>
+        <span>Departments</span>
+        <span>/</span>
+        <span>IT Department</span>
+      </div>
+      <div class="hero-tag">⚙️ Information Technology</div>
+      <h1>Powering <em>Healthcare</em><br>Through Technology</h1>
+      <p>The VISAYASMED Hospital IT Department delivers reliable, secure, and innovative technology solutions that enable our clinical and administrative staff to provide excellent patient care.</p>
+      <div class="hero-actions">
+        <a href="#services" class="btn-hero-primary">
+          Explore Services
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 5l7 7-7 7M5 12h15"/></svg>
+        </a>
+        <a href="#contact" class="btn-hero-outline">Submit a Request</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>99.9%</strong><span>System Uptime</span></div>
+        <div class="hero-stat"><strong>24/7</strong><span>Monitoring</span></div>
+        <div class="hero-stat"><strong>&lt;2hr</strong><span>Avg. Response</span></div>
+        <div class="hero-stat"><strong>500+</strong><span>Devices Managed</span></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-cards">
+        <div class="hcard">
+          <div class="hcard-icon">🛡️</div>
+          <h4>Cybersecurity</h4>
+          <p>ISO 27001 compliant infrastructure</p>
+        </div>
+        <div class="hcard">
+          <div class="hcard-icon">🖥️</div>
+          <h4>HIS / EMR</h4>
+          <p>Integrated hospital systems</p>
+        </div>
+        <div class="hcard">
+          <div class="hcard-icon">📡</div>
+          <h4>Network Ops</h4>
+          <p>Campus-wide connectivity</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section services" id="services">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">What We Do</div>
+      <h2>IT Services & Support</h2>
+      <p>Comprehensive technology services designed to keep VISAYASMED Hospital running at peak performance.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-in">
+        <div class="svc-icon">🖥️</div>
+        <h3>Help Desk & Technical Support</h3>
+        <p>First-line IT support for all hospital staff. Hardware troubleshooting, software assistance, and account management.</p>
+        <a href="admin-tickets.html" class="svc-link">Submit a ticket →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">🏥</div>
+        <h3>Hospital Information System</h3>
+        <p>Administration and support for the HIS/EMR platform, ensuring clinical workflows run smoothly for all departments.</p>
+        <a href="#" class="svc-link" onclick="showHISInfo()">Learn more →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">📡</div>
+        <h3>Network & Connectivity</h3>
+        <p>Wired and wireless network management across all hospital buildings, ensuring fast and reliable connections.</p>
+        <a href="admin-dashboard.html" class="svc-link">Network status →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">🛡️</div>
+        <h3>Cybersecurity & Compliance</h3>
+        <p>Data protection, firewall management, threat monitoring, and compliance with healthcare data security regulations.</p>
+        <a href="#" class="svc-link" onclick="showSecurityPolicy()">Security policy →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">☁️</div>
+        <h3>Server & Cloud Infrastructure</h3>
+        <p>On-premise server administration and cloud service management to ensure high availability of critical systems.</p>
+        <a href="#" class="svc-link" onclick="showInfrastructure()">Infrastructure map →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">📊</div>
+        <h3>Data Management & Reporting</h3>
+        <p>Database administration, backup systems, and business intelligence tools for hospital analytics and decision-making.</p>
+        <a href="#" class="svc-link" onclick="showDataPortal()">Data portal →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">📱</div>
+        <h3>Device & Asset Management</h3>
+        <p>Inventory tracking, provisioning, and lifecycle management for all hospital computers, tablets, and medical devices.</p>
+        <a href="#" class="svc-link" onclick="showAssetPortal()">Asset portal →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">🎓</div>
+        <h3>IT Training & Onboarding</h3>
+        <p>System orientation for new staff and periodic training for software updates, security best practices, and digital tools.</p>
+        <a href="#" class="svc-link" onclick="showTraining()">Schedule training →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR WORKS AND SECURITY -->
+<section class="section" id="works-security">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">Our Expertise</div>
+      <h2>Our Works and Security</h2>
+      <p>Comprehensive IT solutions and robust security measures to protect VISAYASMED Hospital's digital infrastructure.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-in">
+        <div class="service-icon">🏥</div>
+        <h3>HIS / EMR Integration</h3>
+        <p>Seamless integration of Hospital Information System and Electronic Medical Records for efficient patient data management.</p>
+        <a href="#" class="svc-link" onclick="showHISInfo()">Learn more →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="service-icon">🔒</div>
+        <h3>Cybersecurity</h3>
+        <p>Advanced security protocols and monitoring to protect sensitive patient data and prevent unauthorized access.</p>
+        <a href="#" class="svc-link" onclick="showSecurityMeasures()">Security measures →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="service-icon">🌐</div>
+        <h3>Network Infrastructure</h3>
+        <p>Reliable LAN/WAN connectivity ensuring seamless communication across all hospital departments and facilities.</p>
+        <a href="admin-dashboard.html" class="svc-link">Network details →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="service-icon">💻</div>
+        <h3>Help Desk Support</h3>
+        <p>24/7 technical assistance and troubleshooting to ensure minimal downtime and maximum productivity for hospital staff.</p>
+        <a href="admin-tickets.html" class="svc-link">Get support →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="service-icon">📱</div>
+        <h3>Device Management</h3>
+        <p>Comprehensive management of hospital devices, including workstations, medical equipment, and mobile devices.</p>
+        <a href="#" class="svc-link" onclick="showDeviceInventory()">Device inventory →</a>
+      </div>
+      <div class="service-card fade-in">
+        <div class="service-icon">🛡️</div>
+        <h3>Data Protection</h3>
+        <p>Regular backups, disaster recovery planning, and compliance with healthcare data protection regulations.</p>
+        <a href="#" class="svc-link" onclick="showProtectionPolicies()">Protection policies →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section" id="team">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">Our People</div>
+      <h2>Meet the IT Team</h2>
+      <p>Dedicated professionals ensuring seamless technology across VISAYASMED Hospital.</p>
+    </div>
+    <div class="team-grid">
+      <!-- Top Level: IT Manager -->
+      <div class="team-row">
+        <div class="team-card fade-in">
+          <div class="team-avatar"><img src="Romel Banquil.png" alt="Romel B. Banquil"></div>
+          <div class="team-info">
+            <h4>Romel B. Banquil</h4>
+            <span>IT Manager</span>
+            <p>Infrastructure & Operations Lead</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Connector -->
+      <div class="org-connector"></div>
+      
+      <!-- Second Level: Management & Senior Staff -->
+      <div class="team-row">
+        <div class="team-card fade-in">
+          <div class="team-avatar"><img src="liling.jpg" alt="Loudisah Laspiñas"></div>
+          <div class="team-info">
+            <h4>Loudisah "liling" Laspiñas</h4>
+            <span>Systems Analyst</span>
+            <p>HIS / EMR Integration</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Connector -->
+      <div class="org-connector"></div>
+      
+      <!-- Third Level: Network Engineer Sr. Staff -->
+      <div class="team-row">
+        <div class="team-card fade-in">
+          <div class="team-avatar"><img src="Baylon.jpg" alt="John Agustin Baylon"></div>
+          <div class="team-info">
+            <h4>John Agustin Baylon</h4>
+            <span>Network Engineer Sr. Staff</span>
+            <p>LAN / WAN & Connectivity</p>
+          </div>
+        </div>
+        <div class="team-card fade-in">
+          <div class="team-avatar"><img src="jeswel.jpg" alt="Jeswel B. Villamor"></div>
+          <div class="team-info">
+            <h4>Jeswel B. Villamor</h4>
+            <span>Network Engineer Jr. Staff</span>
+            <p>LAN / WAN & Connectivity</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Connector -->
+      <div class="org-connector"></div>
+      
+      <!-- Fourth Level: IT OJT Team -->
+      <div class="team-row">
+        <div class="team-card fade-in">
+          <div class="team-avatar"><img src="ojt.jpg" alt="IT OJT Team"></div>
+          <div class="team-info">
+            <h4>John Roli Yakit, Angelu Banogbanog, Aljon Montecalvo, Kerry Ecuasion</h4>
+            <span>IT OJT'S</span>
+            <p>Help Desk & Hardware</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN PORTAL -->
+<section class="section" id="admin-portal">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">Administration</div>
+      <h2>Admin Portal</h2>
+      <p>Manage user accounts, permissions, and system administration.</p>
+    </div>
+    
+    <div class="admin-grid">
+      <!-- Login Form (shown when not logged in) -->
+      <div id="adminLogin" class="admin-card fade-in">
+        <div class="admin-card-header">
+          <h3>Admin Login</h3>
+          <p>Access the administrative dashboard</p>
+        </div>
+        <form onsubmit="handleAdminLogin(event)">
+          <div class="form-group">
+            <label for="adminEmail">Admin Email</label>
+            <input type="email" id="adminEmail" placeholder="admin@visayamed.com" required>
+          </div>
+          <div class="form-group">
+            <label for="adminPassword">Password</label>
+            <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+          </div>
+          <button type="submit" class="btn-primary">Login to Admin Portal</button>
+        </form>
+      </div>
+      
+      <!-- Admin Dashboard (shown when logged in) -->
+      <div id="adminDashboard" class="admin-dashboard" style="display: none;">
+        <div class="admin-header">
+          <h3>Administrative Dashboard</h3>
+          <button onclick="logoutAdmin()" class="btn-outline">Logout</button>
+        </div>
+        
+        <!-- Account Management Tabs -->
+        <div class="admin-tabs">
+          <button class="tab-btn active" onclick="showTab('createAccount')">Create Account</button>
+          <button class="tab-btn" onclick="showTab('manageUsers')">Manage Users</button>
+          <button class="tab-btn" onclick="showTab('permissions')">Permissions</button>
+        </div>
+        
+        <!-- Create Account Tab -->
+        <div id="createAccount" class="tab-content active">
+          <div class="admin-section">
+            <h4>Create New Account</h4>
+            <form onsubmit="createNewAccount(event)">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="userType">Account Type</label>
+                  <select id="userType" required>
+                    <option value="">Select account type</option>
+                    <option value="admin">Admin Account</option>
+                    <option value="user">User Account</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="userDepartment">Department</label>
+                  <select id="userDepartment" required>
+                    <option value="">Select department</option>
+                    <option value="it">IT Department</option>
+                    <option value="medical">Medical</option>
+                    <option value="nursing">Nursing</option>
+                    <option value="admin">Administration</option>
+                    <option value="emergency">Emergency</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="userFirstName">First Name</label>
+                  <input type="text" id="userFirstName" placeholder="John" required>
+                </div>
+                <div class="form-group">
+                  <label for="userLastName">Last Name</label>
+                  <input type="text" id="userLastName" placeholder="Doe" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="userEmail">Email Address</label>
+                <input type="email" id="userEmail" placeholder="john.doe@visayamed.com" required>
+              </div>
+              <div class="form-group">
+                <label for="userPhone">Phone Number</label>
+                <input type="tel" id="userPhone" placeholder="+63 XXX XXX XXXX">
+              </div>
+              <div class="form-group">
+                <label for="userRole">Role/Position</label>
+                <input type="text" id="userRole" placeholder="e.g., Nurse, Doctor, IT Staff">
+              </div>
+              <div class="form-group">
+                <label for="userPermissions">Initial Permissions</label>
+                <div class="permission-checkboxes">
+                  <label><input type="checkbox" value="view_dashboard"> View Dashboard</label>
+                  <label><input type="checkbox" value="create_tickets"> Create Tickets</label>
+                  <label><input type="checkbox" value="manage_users"> Manage Users</label>
+                  <label><input type="checkbox" value="system_admin"> System Admin</label>
+                </div>
+              </div>
+              <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Manage Users Tab -->
+        <div id="manageUsers" class="tab-content">
+          <div class="admin-section">
+            <h4>User Management</h4>
+            <div class="user-list">
+              <div class="user-item">
+                <div class="user-info">
+                  <strong>Romel B. Banquil</strong>
+                  <span>IT Manager</span>
+                  <span>romel.banquil@visayamed.com</span>
+                </div>
+                <div class="user-actions">
+                  <button class="btn-sm">Edit</button>
+                  <button class="btn-sm btn-danger">Deactivate</button>
+                </div>
+              </div>
+              <div class="user-item">
+                <div class="user-info">
+                  <strong>Loudisah Laspiñas</strong>
+                  <span>Systems Analyst</span>
+                  <span>liling.laspinas@visayamed.com</span>
+                </div>
+                <div class="user-actions">
+                  <button class="btn-sm">Edit</button>
+                  <button class="btn-sm btn-danger">Deactivate</button>
+                </div>
+              </div>
+              <div class="user-item">
+                <div class="user-info">
+                  <strong>John Agustin Baylon</strong>
+                  <span>Network Engineer</span>
+                  <span>john.baylon@visayamed.com</span>
+                </div>
+                <div class="user-actions">
+                  <button class="btn-sm">Edit</button>
+                  <button class="btn-sm btn-danger">Deactivate</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Permissions Tab -->
+        <div id="permissions" class="tab-content">
+          <div class="admin-section">
+            <h4>Permission Management</h4>
+            <div class="permission-grid">
+              <div class="permission-category">
+                <h5>Dashboard Access</h5>
+                <label><input type="checkbox" checked> View System Status</label>
+                <label><input type="checkbox" checked> View Reports</label>
+                <label><input type="checkbox"> Edit System Settings</label>
+              </div>
+              <div class="permission-category">
+                <h5>User Management</h5>
+                <label><input type="checkbox"> Create Users</label>
+                <label><input type="checkbox"> Edit Users</label>
+                <label><input type="checkbox"> Delete Users</label>
+              </div>
+              <div class="permission-category">
+                <h5>Ticket System</h5>
+                <label><input type="checkbox" checked> Create Tickets</label>
+                <label><input type="checkbox" checked> View All Tickets</label>
+                <label><input type="checkbox"> Assign Tickets</label>
+              </div>
+              <div class="permission-category">
+                <h5>System Admin</h5>
+                <label><input type="checkbox"> Backup System</label>
+                <label><input type="checkbox"> System Logs</label>
+                <label><input type="checkbox"> Security Settings</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="section" id="dashboard">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">IT Dashboard</div>
+      <h2>System Overview</h2>
+      <p>Real-time monitoring and management of VISAYASMED Hospital IT infrastructure.</p>
+    </div>
+    
+    <div class="dashboard-grid">
+      <!-- System Status Cards -->
+      <div class="dashboard-row">
+        <div class="status-card fade-in">
+          <div class="status-icon online">🟢</div>
+          <div class="status-info">
+            <h3>Network Status</h3>
+            <p>All systems operational</p>
+            <span class="status-time">Updated 2 mins ago</span>
+          </div>
+        </div>
+        
+        <div class="status-card fade-in">
+          <div class="status-icon online">🟢</div>
+          <div class="status-info">
+            <h3>HIS/EMR Systems</h3>
+            <p>Electronic records active</p>
+            <span class="status-time">Updated 5 mins ago</span>
+          </div>
+        </div>
+        
+        <div class="status-card fade-in">
+          <div class="status-icon warning">🟡</div>
+          <div class="status-info">
+            <h3>Server Load</h3>
+            <p>Moderate load (65%)</p>
+            <span class="status-time">Updated 1 min ago</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Actions -->
+      <div class="dashboard-section">
+        <h3>Quick Actions</h3>
+        <div class="action-grid">
+          <button class="action-btn" onclick="window.location.href='admin-tickets.html'">
+            <span class="action-icon">🎫</span>
+            <span>Create Ticket</span>
+          </button>
+          <button class="action-btn" onclick="showReports()">
+            <span class="action-icon">📊</span>
+            <span>View Reports</span>
+          </button>
+          <button class="action-btn" onclick="showSystemTools()">
+            <span class="action-icon">🔧</span>
+            <span>System Tools</span>
+          </button>
+          <button class="action-btn" onclick="window.location.href='admin-dashboard.html'">
+            <span class="action-icon">👥</span>
+            <span>User Management</span>
+          </button>
+          <button class="action-btn" onclick="showDeviceInventory()">
+            <span class="action-icon">📱</span>
+            <span>Device Inventory</span>
+          </button>
+          <button class="action-btn" onclick="showSecurityCenter()">
+            <span class="action-icon">🔒</span>
+            <span>Security Center</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Recent Activity -->
+      <div class="dashboard-section">
+        <h3>Recent Activity</h3>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-icon">🔧</div>
+            <div class="activity-details">
+              <strong>Network Maintenance</strong>
+              <p>Router configuration updated - Building A</p>
+              <span class="activity-time">10 minutes ago</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">👤</div>
+            <div class="activity-details">
+              <strong>New User Account</strong>
+              <p>Dr. Maria Santos - Emergency Department</p>
+              <span class="activity-time">25 minutes ago</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">🎫</div>
+            <div class="activity-details">
+              <strong>Ticket Resolved</strong>
+              <p>Printer issue - Nursing Station 2B</p>
+              <span class="activity-time">1 hour ago</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">🔄</div>
+            <div class="activity-details">
+              <strong>System Backup</strong>
+              <p>Daily backup completed successfully</p>
+              <span class="activity-time">2 hours ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Performance Metrics -->
+      <div class="dashboard-section">
+        <h3>Performance Metrics</h3>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-value">98.5%</div>
+            <div class="metric-label">Uptime</div>
+            <div class="metric-trend positive">↑ 0.2%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">142</div>
+            <div class="metric-label">Active Users</div>
+            <div class="metric-trend positive">↑ 12</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">23</div>
+            <div class="metric-label">Open Tickets</div>
+            <div class="metric-trend negative">↑ 5</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">1.2s</div>
+            <div class="metric-label">Avg Response</div>
+            <div class="metric-trend positive">↓ 0.3s</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANNOUNCEMENTS -->
+<section class="section announcements" id="announcements">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">Latest Updates</div>
+      <h2>IT Announcements</h2>
+      <p>System notices, scheduled maintenance, and important IT updates for hospital staff.</p>
+    </div>
+    <div class="ann-grid">
+      <div class="ann-list">
+        <div class="ann-card fade-in">
+          <div class="ann-date"><strong>28</strong><span>Feb</span></div>
+          <div class="ann-body">
+            <span class="ann-tag maintenance">🔧 Maintenance</span>
+            <h4>Scheduled Network Maintenance – 3rd Floor</h4>
+            <p>Network switches on the 3rd floor will undergo preventive maintenance on March 1, 2:00–4:00 AM. Temporary disruptions expected.</p>
+          </div>
+        </div>
+        <div class="ann-card fade-in">
+          <div class="ann-date"><strong>25</strong><span>Feb</span></div>
+          <div class="ann-body">
+            <span class="ann-tag upgrade">⬆️ Upgrade</span>
+            <h4>HIS Platform Updated to Version 4.7</h4>
+            <p>The Hospital Information System has been updated. Please clear browser cache and log in again. New features include improved billing module and faster lab results view.</p>
+          </div>
+        </div>
+        <div class="ann-card fade-in">
+          <div class="ann-date"><strong>20</strong><span>Feb</span></div>
+          <div class="ann-body">
+            <span class="ann-tag security">🔒 Security</span>
+            <h4>Mandatory Password Reset – All Staff Accounts</h4>
+            <p>All hospital staff are required to reset their Active Directory passwords by March 5. Please follow the new 12-character policy.</p>
+          </div>
+        </div>
+        <div class="ann-card fade-in">
+          <div class="ann-date"><strong>15</strong><span>Feb</span></div>
+          <div class="ann-body">
+            <span class="ann-tag training">📚 Training</span>
+            <h4>IT Security Awareness Seminar – All Departments</h4>
+            <p>Mandatory phishing awareness and data security training for all staff. Schedule your slot via the IT portal before March 10.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sidebar-widget fade-in" style="margin-bottom:1rem;">
+          <h3>⚡ Quick Links</h3>
+          <a href="admin-tickets.html" class="quick-link"><div class="quick-link-icon">🎫</div> Submit IT Ticket</a>
+          <a href="#" class="quick-link" onclick="showPasswordReset()"><div class="quick-link-icon">🔑</div> Password Reset</a>
+          <a href="#" class="quick-link" onclick="showAssetRequest()"><div class="quick-link-icon">📦</div> Asset Request</a>
+          <a href="#" class="quick-link" onclick="showPrinterGuide()"><div class="quick-link-icon">🖨️</div> Printer Setup Guide</a>
+          <a href="admin-dashboard.html" class="quick-link"><div class="quick-link-icon">📡</div> Network Status</a>
+          <a href="#" class="quick-link" onclick="showITForms()"><div class="quick-link-icon">📋</div> IT Forms & Policies</a>
+        </div>
+        <div class="sidebar-widget fade-in">
+          <h3>📞 Emergency IT Contacts</h3>
+          <a href="tel:+3225310001" class="quick-link"><div class="quick-link-icon">☎️</div> Help Desk Ext. 1001</a>
+          <a href="tel:+3225310002" class="quick-link"><div class="quick-link-icon">📟</div> On-call: 0917-XXX-XXXX</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-grid">
+    <div class="contact-left fade-in">
+      <div class="section-tag" style="background:rgba(59,158,255,.15);border-color:rgba(59,158,255,.3);color:var(--bright);">Get In Touch</div>
+      <h2>How Can We <em>Help</em> You?</h2>
+      <p>Reach out to the VISAYASMED IT DEPARTMENT for technical support, system requests, or general IT inquiries. Our team is here to assist you.</p>
+      <div class="contact-details">
+        <div class="contact-item">
+          <div class="contact-item-icon">📍</div>
+          <div class="contact-item-text">
+            <strong>Location</strong>
+            <span>IT Department, 1st Floor – Admin Building, VISAYASMED Hospital Cebu</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📞</div>
+          <div class="contact-item-text">
+            <strong>Help Desk</strong>
+            <span>Local 1001 | (+32) 253-1901 ext. 1001</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📧</div>
+          <div class="contact-item-text">
+            <strong>Email</strong>
+            <span>it@visayasmed.com.ph</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">🕐</div>
+          <div class="contact-item-text">
+            <strong>Office Hours</strong>
+            <span>Monday – Sunday: 8:00 AM – 5:00 PM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form fade-in">
+      <h3>📋 Submit an IT Request</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Juan">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Dela Cruz">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Department / Unit</label>
+        <select>
+          <option value="">Select your department</option>
+          <option>Emergency Room</option>
+          <option>Nursing Unit</option>
+          <option>Radiology</option>
+          <option>Laboratory</option>
+          <option>Pharmacy</option>
+          <option>Finance & Billing</option>
+          <option>Admissions</option>
+          <option>Administration</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Request Type</label>
+        <select>
+          <option value="">Select request type</option>
+          <option>Hardware Issue</option>
+          <option>Software / HIS Support</option>
+          <option>Network / Connectivity</option>
+          <option>Account / Password</option>
+          <option>New Device / Asset Request</option>
+          <option>Security Concern</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message / Description</label>
+        <textarea placeholder="Describe your issue or request in detail..."></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%;padding:.8rem;font-size:.9rem;" onclick="submitITRequest(event)">
+        📤 Submit Request
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-about">
+      <a href="#" class="logo">
+        <div class="logo-icon" style="width:38px;height:38px;">
+          <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8v.01l-8 4-8-4V8l8-3.82zM4 9.78l7 3.5V19.4l-7-3.5V9.78zm9 10.62V13.28l7-3.5v6.12l-7 3.5z"/></svg>
+        </div>
+        <div class="logo-text">
+          <strong style="color:white;font-size:1.1rem;">VISAYASMED</strong>
+          <span>IT Department</span>
+        </div>
+      </a>
+      <p style="margin-top:1rem;">Providing innovative and reliable IT infrastructure to support the mission of VISAYASMED Hospital in delivering exceptional patient care in Cebu.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="#">Help Desk</a>
+      <a href="#">HIS / EMR Support</a>
+      <a href="#">Network Operations</a>
+      <a href="#">Cybersecurity</a>
+      <a href="#">Device Management</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="admin.html">IT Portal</a>
+      <a href="#">Submit a Ticket</a>
+      <a href="#">IT Policies</a>
+      <a href="#">Forms & Requests</a>
+      <a href="#">Staff Training</a>
+    </div>
+    <div class="footer-col">
+      <h4>Hospital</h4>
+      <a href="#">VISAYASMED Hospital</a>
+      <a href="#">Departments</a>
+      <a href="#">Patient Care</a>
+      <a href="#">Find a Doctor</a>
+      <a href="#">Appointments</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 VISAYASMED Hospital – IT Department. All rights reserved.</span>
+    <span>Privacy Policy · Data Security · Terms of Use</span>
+  </div>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeLoginModal()">✕</button>
+    <div class="modal-header">
+      <h2>Staff Login</h2>
+      <p>Access the VISAYASMED IT Portal</p>
+    </div>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="username">Email or Username</label>
+        <input type="email" id="username" name="username" placeholder="Enter your email or username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+      <div class="form-options">
+        <label>
+          <input type="checkbox" name="remember">
+          Remember me
+        </label>
+        <a href="#">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn-login">Sign In</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Mobile Menu Toggle
+  function toggleMobileMenu() {
+    const navLinks = document.getElementById('navLinks');
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    
+    navLinks.classList.toggle('active');
+    toggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+  }
+
+  // Close mobile menu when clicking on a link
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      const navLinks = document.getElementById('navLinks');
+      const toggle = document.querySelector('.mobile-menu-toggle');
+      navLinks.classList.remove('active');
+      toggle.textContent = '☰';
+    });
+  });
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Stagger cards
+  document.querySelectorAll('.services-grid .service-card, .team-grid .team-card, .ann-list .ann-card').forEach((card, i) => {
+    card.style.transitionDelay = (i * 0.08) + 's';
+  });
+
+  // Login Modal Functions
+  function openLoginModal(event) {
+    event.preventDefault();
+    document.getElementById('loginModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLoginModal() {
+    document.getElementById('loginModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function handleLogin(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    // Check against admin credentials
+    if ((username === 'superadmin@visayasmed.com.ph' && password === 'SuperAdmin@2026') || 
+        (username === 'admin@visayasmed.com.ph' && password === 'Admin@1234')) {
+      // Set session and redirect to admin portal
+      localStorage.setItem('currentUser', JSON.stringify({
+        email: username,
+        name: username === 'superadmin@visayasmed.com.ph' ? 'Super Administrator' : 'System Administrator',
+        role: username === 'superadmin@visayasmed.com.ph' ? 'superadmin' : 'admin'
+      }));
+      window.location.href = 'admin.html';
+      return;
+    }
+    
+    // Basic validation for regular users
+    if (username && password) {
+      // Show loading state
+      const loginBtn = event.target.querySelector('.btn-login');
+      const originalText = loginBtn.textContent;
+      loginBtn.textContent = 'Signing in...';
+      loginBtn.disabled = true;
+      
+      // Simulate authentication
+      setTimeout(() => {
+        // For demo, show success message
+        alert(`Login successful! Welcome, ${username}.\n\nIn a real application, this would redirect to the appropriate dashboard.`);
+        closeLoginModal();
+        event.target.reset();
+        loginBtn.textContent = originalText;
+        loginBtn.disabled = false;
+      }, 1500);
+    }
+  }
+
+  // Admin Portal Functions
+  function handleAdminLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('adminEmail').value;
+    const password = document.getElementById('adminPassword').value;
+    
+    // Check against updated admin credentials
+    if ((email === 'superadmin@visayasmed.com.ph' && password === 'SuperAdmin@2026') || 
+        (email === 'admin@visayasmed.com.ph' && password === 'Admin@1234')) {
+      // Set session and redirect to admin page
+      localStorage.setItem('currentUser', JSON.stringify({
+        email: email,
+        name: email === 'superadmin@visayasmed.com.ph' ? 'Super Administrator' : 'System Administrator',
+        role: email === 'superadmin@visayasmed.com.ph' ? 'superadmin' : 'admin'
+      }));
+      
+      // Show success message and redirect
+      alert('Login successful! Redirecting to admin portal...');
+      setTimeout(() => {
+        window.location.href = 'admin.html';
+      }, 1000);
+    } else {
+      alert('Invalid admin credentials.\n\nUse:\n• superadmin@visayasmed.com.ph / SuperAdmin@2026\n• admin@visayasmed.com.ph / Admin@1234');
+    }
+  }
+
+  function logoutAdmin() {
+    document.getElementById('adminDashboard').style.display = 'none';
+    document.getElementById('adminLogin').style.display = 'block';
+    document.getElementById('adminEmail').value = '';
+    document.getElementById('adminPassword').value = '';
+  }
+
+  function showTab(tabName) {
+    // Hide all tabs
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    
+    // Remove active class from all buttons
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    
+    // Show selected tab
+    document.getElementById(tabName).classList.add('active');
+    
+    // Add active class to clicked button
+    event.target.classList.add('active');
+  }
+
+  function createNewAccount(event) {
+    event.preventDefault();
+    
+    const formData = {
+      userType: document.getElementById('userType').value,
+      department: document.getElementById('userDepartment').value,
+      firstName: document.getElementById('userFirstName').value,
+      lastName: document.getElementById('userLastName').value,
+      email: document.getElementById('userEmail').value,
+      phone: document.getElementById('userPhone').value,
+      role: document.getElementById('userRole').value,
+      permissions: []
+    };
+    
+    // Get checked permissions
+    const checkboxes = document.querySelectorAll('#userPermissions input[type="checkbox"]:checked');
+    checkboxes.forEach(cb => formData.permissions.push(cb.value));
+    
+    // In a real application, this would send data to server
+    console.log('Creating account:', formData);
+    
+    alert(`Account created successfully!\n\nName: ${formData.firstName} ${formData.lastName}\nEmail: ${formData.email}\nType: ${formData.userType}\nDepartment: ${formData.department}\nPermissions: ${formData.permissions.join(', ')}`);
+    
+    // Reset form
+    event.target.reset();
+  }
+
+  // Additional functional functions
+  function showPasswordReset() {
+    alert('Password Reset\n\nTo reset your password:\n1. Contact IT Help Desk at ext. 1001\n2. Email it@visayasmed.com.ph\n3. Visit IT Department in person\n\nFor security reasons, password resets must be verified in person.');
+  }
+
+  function showAssetRequest() {
+    alert('Asset Request Form\n\nTo request new IT assets:\n1. Submit ticket via IT Portal\n2. Fill out Asset Request Form\n3. Get approval from Department Head\n4. IT will process within 3-5 business days\n\nContact: ext. 1001 for urgent requests');
+  }
+
+  function showPrinterGuide() {
+    alert('Printer Setup Guide\n\nQuick Setup Steps:\n1. Connect printer to network\n2. Install drivers from IT share\n3. Configure default printer\n4. Test print page\n5. Contact IT if issues persist\n\nFull guide available: \\it-share\\printer-guides');
+  }
+
+  function showITForms() {
+    alert('IT Forms & Policies\n\nAvailable Forms:\n• New User Request\n• Software Installation\n• Hardware Request\n• Access Request\n• Incident Report\n\nAll forms are available in the IT Portal or contact ext. 1001');
+  }
+
+  function showHISInfo() {
+    alert('HIS/EMR System Information\n\nHospital Information System v4.7\n• 24/7 Availability: 99.9%\n• Support: ext. 1002-1005\n• Training: Monthly sessions\n• Emergency: 24/7 hotline\n\nFor issues: Create IT ticket immediately');
+  }
+
+  function showSecurityPolicy() {
+    alert('Cybersecurity Policy\n\nSecurity Measures:\n• Firewall Protection\n• Daily Backups\n• Threat Monitoring\n• Encryption Standards\n• Compliance: HIPAA, PHILHEALTH\n\nReport security concerns to: security@visayasmed.com.ph');
+  }
+
+  function showInfrastructure() {
+    alert('Infrastructure Overview\n\nNetwork Status: 🟢 Operational\n• Server Uptime: 99.9%\n• Backup Status: ✅ Complete\n• Internet: 1Gbps Fiber\n• WiFi: Campus-wide coverage\n\nDetailed status: admin-dashboard.html');
+  }
+
+  function showDataPortal() {
+    alert('Data Management Portal\n\nAvailable Reports:\n• System Performance\n• User Activity Logs\n• Backup Status\n• Security Reports\n• Asset Inventory\n\nAccess requires admin privileges. Contact IT for access.');
+  }
+
+  function showAssetPortal() {
+    alert('Asset Management Portal\n\nAsset Categories:\n• Computers & Laptops\n• Medical Equipment\n• Network Devices\n• Software Licenses\n• Mobile Devices\n\nFor asset requests: Submit IT ticket or contact ext. 1003');
+  }
+
+  function showTraining() {
+    alert('IT Training Schedule\n\nUpcoming Training:\n• March 10: Security Awareness\n• March 15: HIS/EMR Updates\n• March 20: Data Protection\n• March 25: New Software Tools\n\nRegistration: IT Portal or email training@visayasmed.com.ph');
+  }
+
+  function showSecurityMeasures() {
+    alert('Security Measures Details\n\nProtection Systems:\n• Next-Gen Firewall\n• Endpoint Protection\n• Intrusion Detection\n• Data Encryption\n• Multi-Factor Authentication\n• Security: 24/7 Monitoring Team\n\nReport incidents: ext. 1001');
+  }
+
+  function showDeviceInventory() {
+    alert('Device Inventory System\n\nTotal Devices Managed: 500+\n• Workstations: 250\n• Laptops: 120\n• Medical Devices: 80\n• Network Equipment: 50\n• Mobile Devices: 50+\n\nFor device issues: Submit IT ticket immediately');
+  }
+
+  function showProtectionPolicies() {
+    alert('Data Protection Policies\n\nBackup Schedule:\n• Daily: Critical Systems\n• Weekly: Full Systems\n• Monthly: Off-site Backup\n\nRecovery Time: <4 hours\nCompliance: HIPAA, PHILHEALTH\n\nQuestions: Contact ext. 1004');
+  }
+
+  function showReports() {
+    alert('System Reports\n\nAvailable Reports:\n• Performance Metrics\n• User Activity\n• Ticket Statistics\n• Asset Utilization\n• Security Logs\n\nGenerate reports: admin-dashboard.html');
+  }
+
+  function showSystemTools() {
+    alert('System Tools\n\nAvailable Tools:\n• Network Diagnostics\n• System Health Check\n• Performance Monitor\n• Log Viewer\n• Backup Manager\n\nAccess requires admin privileges');
+  }
+
+  function showSecurityCenter() {
+    alert('Security Center\n\nSecurity Status: 🟢 Secure\n• Threat Level: Low\n• Last Scan: Clean\n• Firewall: Active\n• Updates: Current\n\nReport security concerns: security@visayasmed.com.ph');
+  }
+
+  function submitITRequest(event) {
+    event.preventDefault();
+    
+    const form = event.target.closest('form');
+    const formData = new FormData(form);
+    
+    // Get form values
+    const firstName = form.querySelector('input[placeholder="Juan"]').value;
+    const lastName = form.querySelector('input[placeholder="Dela Cruz"]').value;
+    const department = form.querySelector('select').value;
+    const requestType = form.querySelectorAll('select')[1].value;
+    const message = form.querySelector('textarea').value;
+    
+    if (!firstName || !lastName || !department || !requestType || !message) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+    
+    // Simulate submission
+    alert(`IT Request Submitted Successfully!\n\nRequest Details:\n• Name: ${firstName} ${lastName}\n• Department: ${department}\n• Type: ${requestType}\n• Message: ${message}\n\nTicket ID: #${Math.floor(Math.random() * 9000) + 1000}\nPriority: Normal\nResponse Time: 2-4 hours\n\nYou will receive email confirmation shortly.`);
+    
+    // Reset form
+    form.reset();
+  }
+
+  // Close modal when clicking outside
+  document.getElementById('loginModal').addEventListener('click', function(event) {
+    if (event.target === this) {
+      closeLoginModal();
+    }
+  });
+
+  // Close modal with Escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeLoginModal();
+    }
+  });
+</script>
+</body>
+</html>
