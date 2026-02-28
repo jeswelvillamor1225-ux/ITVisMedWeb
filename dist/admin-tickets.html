@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Tickets - VISMED Admin Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0a1628;
+            --navy2: #0d1f3c;
+            --blue: #1a3a6b;
+            --accent: #2f80ed;
+            --accent2: #56ccf2;
+            --glass: rgba(255,255,255,0.05);
+            --glass-border: rgba(255,255,255,0.1);
+            --text: #e8f0fe;
+            --muted: #8aa0c0;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-mesh {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 60% at 70% 20%, rgba(47,128,237,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 10% 80%, rgba(86,204,242,0.1) 0%, transparent 50%),
+                var(--navy);
+        }
+
+        .container {
+            position: relative; z-index: 1; max-width: 1200px; margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(13,31,60,0.85);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(24px);
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent2);
+        }
+
+        .header-actions {
+            display: flex; gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px; border: none; border-radius: 8px;
+            font-family: 'DM Sans', sans-serif; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--accent); color: white;
+        }
+        .btn-primary:hover {
+            background: #1a6fd4; transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent; color: var(--text);
+            border: 1px solid var(--glass-border);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px; margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: rgba(13,31,60,0.7); border: 1px solid var(--glass-border);
+            border-radius: 14px; padding: 20px; backdrop-filter: blur(12px);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--muted); font-size: 14px;
+        }
+
+        .card {
+            background: rgba(13,31,60,0.7); border: 1px solid var(--glass-border);
+            border-radius: 14px; padding: 24px; backdrop-filter: blur(12px);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700;
+        }
+
+        .filters {
+            display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+        }
+
+        .filter-select {
+            background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border);
+            border-radius: 8px; color: var(--text); padding: 8px 12px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        table {
+            width: 100%; border-collapse: collapse;
+        }
+
+        th {
+            text-align: left; padding: 12px; font-size: 12px;
+            color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        td {
+            padding: 14px 12px; font-size: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .priority-badge {
+            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;
+        }
+
+        .priority-low { background: rgba(39,174,96,0.2); color: #2ecc71; }
+        .priority-medium { background: rgba(243,156,18,0.2); color: #f39c12; }
+        .priority-high { background: rgba(231,76,60,0.2); color: #e74c3c; }
+        .priority-critical { background: rgba(155,89,182,0.3); color: #9b59b6; }
+
+        .status-dot {
+            display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;
+        }
+
+        .status-open { background: #2ecc71; box-shadow: 0 0 6px #2ecc71; }
+        .status-progress { background: #f39c12; }
+        .status-resolved { background: #e74c3c; }
+        .status-closed { background: #95a5a6; }
+
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            z-index: 999; display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal {
+            background: rgba(13,31,60,0.98); border: 1px solid var(--glass-border);
+            border-radius: 16px; padding: 32px; width: 100%; max-width: 600px;
+            max-height: 90vh; overflow-y: auto;
+        }
+
+        .modal h2 {
+            font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800;
+            margin-bottom: 20px; color: var(--accent2);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block; font-size: 12px; font-weight: 500;
+            color: var(--muted); letter-spacing: 0.5px; margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%; padding: 12px 16px;
+            background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border);
+            border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif;
+            font-size: 14px; transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none; border-color: var(--accent);
+        }
+
+        .form-group textarea {
+            min-height: 100px; resize: vertical;
+        }
+
+        .form-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+        }
+
+        .modal-footer {
+            display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;
+        }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 16px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .filters { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>🎫 IT Support Tickets</h1>
+                <p style="color: var(--muted); margin-top: 4px;">Manage and track support requests</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="goBack()">
+                    ← Go Back
+                </button>
+                <a href="admin.html" class="btn btn-secondary">
+                    ← Back to Portal
+                </a>
+                <button class="btn btn-primary" onclick="openNewTicketModal()">
+                    + New Ticket
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" style="color: var(--accent2);" id="statOpen">0</div>
+                <div class="stat-label">Open Tickets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #f39c12;" id="statProgress">0</div>
+                <div class="stat-label">In Progress</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #2ecc71;" id="statResolved">0</div>
+                <div class="stat-label">Resolved</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #e74c3c;" id="statCritical">0</div>
+                <div class="stat-label">Critical Priority</div>
+            </div>
+        </div>
+
+        <!-- Tickets Table -->
+        <div class="card">
+            <div class="card-header">
+                <h2>All Tickets</h2>
+                <div style="display: flex; gap: 12px;">
+                    <select class="filter-select" id="filterStatus" onchange="filterTickets()">
+                        <option value="">All Status</option>
+                        <option value="Open">Open</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                    <select class="filter-select" id="filterPriority" onchange="filterTickets()">
+                        <option value="">All Priority</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
+                    </select>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Subject</th>
+                        <th>Submitted By</th>
+                        <th>Category</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ticketsTableBody">
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: var(--muted);">
+                            No tickets found
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- New Ticket Modal -->
+    <div id="newTicketModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h2>🎫 Create New Ticket</h2>
+            <form id="newTicketForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="ticketCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Hardware">Hardware</option>
+                            <option value="Software">Software</option>
+                            <option value="Network">Network</option>
+                            <option value="Account/Access">Account/Access</option>
+                            <option value="Printer/Scanner">Printer/Scanner</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="ticketPriority" required>
+                            <option value="">Select Priority</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" id="ticketSubject" placeholder="Brief description of the issue" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Details</label>
+                    <textarea id="ticketDetails" placeholder="Describe the problem in detail..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Submitted By</label>
+                    <input type="text" id="ticketSubmittedBy" placeholder="Your name" required>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeNewTicketModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Ticket</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Ticket Details Modal -->
+    <div id="ticketDetailsModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h2 id="detailsModalTitle">🎫 Ticket Details</h2>
+            <div id="ticketDetailsContent">
+                <!-- Ticket details will be populated here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeDetailsModal()">Close</button>
+                <button type="button" class="btn btn-primary" id="updateStatusBtn" onclick="updateTicketStatus()">Update Status</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check for existing session on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (!savedUser) {
+                // Redirect to admin login if not authenticated
+                window.location.href = 'admin.html';
+                return;
+            }
+            
+            // Initialize page
+            renderTickets();
+            updateStatistics();
+        });
+
+        // Sample ticket data
+        let tickets = [
+            {
+                id: 1001,
+                subject: "Computer won't start",
+                category: "Hardware",
+                priority: "High",
+                status: "Open",
+                submittedBy: "Juan Dela Cruz",
+                date: "2026-02-27",
+                details: "The computer is not turning on. I've checked all cables and power outlets."
+            },
+            {
+                id: 1002,
+                subject: "Cannot access shared drive",
+                category: "Network",
+                priority: "Medium",
+                status: "In Progress",
+                submittedBy: "Maria Santos",
+                date: "2026-02-26",
+                details: "I'm unable to access the shared network drive. Getting permission denied error."
+            },
+            {
+                id: 1003,
+                subject: "Printer not working",
+                category: "Printer/Scanner",
+                priority: "Low",
+                status: "Resolved",
+                submittedBy: "Jose Reyes",
+                date: "2026-02-25",
+                details: "The printer in Ward 3 is not printing. Shows error message."
+            }
+        ];
+
+        let currentTicketId = null;
+        let ticketIdCounter = 1004;
+
+        // Go back function
+        function goBack() {
+            window.history.back();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTickets();
+            updateStatistics();
+        });
+
+        // Render tickets table
+        function renderTickets(filteredTickets = null) {
+            const tbody = document.getElementById('ticketsTableBody');
+            const ticketsToRender = filteredTickets || tickets;
+            
+            if (ticketsToRender.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: var(--muted);">
+                            No tickets found
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = ticketsToRender.map(ticket => `
+                <tr>
+                    <td><code style="color: var(--accent2);">#${ticket.id}</code></td>
+                    <td>${ticket.subject}</td>
+                    <td>${ticket.submittedBy}</td>
+                    <td>${ticket.category}</td>
+                    <td><span class="priority-badge priority-${ticket.priority.toLowerCase()}">${ticket.priority}</span></td>
+                    <td>
+                        <span class="status-dot status-${ticket.status.toLowerCase().replace(' ', '')}"></span>
+                        ${ticket.status}
+                    </td>
+                    <td>${ticket.date}</td>
+                    <td>
+                        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;" onclick="viewTicketDetails(${ticket.id})">
+                            View
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            document.getElementById('statOpen').textContent = tickets.filter(t => t.status === 'Open').length;
+            document.getElementById('statProgress').textContent = tickets.filter(t => t.status === 'In Progress').length;
+            document.getElementById('statResolved').textContent = tickets.filter(t => t.status === 'Resolved').length;
+            document.getElementById('statCritical').textContent = tickets.filter(t => t.priority === 'Critical').length;
+        }
+
+        // Filter tickets
+        function filterTickets() {
+            const statusFilter = document.getElementById('filterStatus').value;
+            const priorityFilter = document.getElementById('filterPriority').value;
+            
+            let filtered = tickets;
+            
+            if (statusFilter) {
+                filtered = filtered.filter(t => t.status === statusFilter);
+            }
+            
+            if (priorityFilter) {
+                filtered = filtered.filter(t => t.priority === priorityFilter);
+            }
+            
+            renderTickets(filtered);
+        }
+
+        // Open new ticket modal
+        function openNewTicketModal() {
+            document.getElementById('newTicketModal').classList.remove('hidden');
+        }
+
+        // Close new ticket modal
+        function closeNewTicketModal() {
+            document.getElementById('newTicketModal').classList.add('hidden');
+            document.getElementById('newTicketForm').reset();
+        }
+
+        // Handle new ticket submission
+        document.getElementById('newTicketForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newTicket = {
+                id: ticketIdCounter++,
+                subject: document.getElementById('ticketSubject').value,
+                category: document.getElementById('ticketCategory').value,
+                priority: document.getElementById('ticketPriority').value,
+                status: 'Open',
+                submittedBy: document.getElementById('ticketSubmittedBy').value,
+                date: new Date().toISOString().split('T')[0],
+                details: document.getElementById('ticketDetails').value
+            };
+            
+            tickets.unshift(newTicket);
+            renderTickets();
+            updateStatistics();
+            closeNewTicketModal();
+            
+            alert('Ticket created successfully! Ticket ID: #' + newTicket.id);
+        });
+
+        // View ticket details
+        function viewTicketDetails(ticketId) {
+            const ticket = tickets.find(t => t.id === ticketId);
+            if (!ticket) return;
+            
+            currentTicketId = ticketId;
+            
+            document.getElementById('detailsModalTitle').textContent = `🎫 Ticket #${ticketId} Details`;
+            document.getElementById('ticketDetailsContent').innerHTML = `
+                <div style="display: grid; gap: 16px;">
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" value="${ticket.subject}" readonly>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <input type="text" value="${ticket.category}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <input type="text" value="${ticket.priority}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="ticketStatusSelect">
+                            <option value="Open" ${ticket.status === 'Open' ? 'selected' : ''}>Open</option>
+                            <option value="In Progress" ${ticket.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                            <option value="Resolved" ${ticket.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
+                            <option value="Closed" ${ticket.status === 'Closed' ? 'selected' : ''}>Closed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Submitted By</label>
+                        <input type="text" value="${ticket.submittedBy}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Date Submitted</label>
+                        <input type="text" value="${ticket.date}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Details</label>
+                        <textarea readonly>${ticket.details}</textarea>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('ticketDetailsModal').classList.remove('hidden');
+        }
+
+        // Close details modal
+        function closeDetailsModal() {
+            document.getElementById('ticketDetailsModal').classList.add('hidden');
+            currentTicketId = null;
+        }
+
+        // Update ticket status
+        function updateTicketStatus() {
+            if (!currentTicketId) return;
+            
+            const newStatus = document.getElementById('ticketStatusSelect').value;
+            const ticket = tickets.find(t => t.id === currentTicketId);
+            
+            if (ticket) {
+                ticket.status = newStatus;
+                renderTickets();
+                updateStatistics();
+                closeDetailsModal();
+                alert(`Ticket #${currentTicketId} status updated to ${newStatus}`);
+            }
+        }
+
+        // Close modals on overlay click
+        document.getElementById('newTicketModal').addEventListener('click', function(e) {
+            if (e.target === this) closeNewTicketModal();
+        });
+
+        document.getElementById('ticketDetailsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDetailsModal();
+        });
+    </script>
+</body>
+</html>
