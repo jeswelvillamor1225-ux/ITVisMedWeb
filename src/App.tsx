@@ -6,7 +6,7 @@ import AuthForms from './components/AuthForms';
 import UserDashboard from './components/UserDashboard';
 import AdminPage from './components/AdminPage';
 import AdminTickets from './components/AdminTickets';
-import AdminWebsite from './components/AdminWebsite';
+import AdminWebsite from './components/AdminWebsite.tsx';
 import ITPortal from './components/ITPortal';
 import AdminPortal from './components/AdminPortal';
 import './index.css';
