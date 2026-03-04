@@ -1,10 +1,4 @@
 {
-<<<<<<< HEAD
-  "rewrites": [
-    { "source": "/((?!admin.*\\.html).*)", "destination": "/index.html" }
-  ]
-}
-=======
   "version": 2,
   "name": "itvismedweb",
   "builds": [
@@ -42,4 +36,3 @@
   "outputDirectory": "dist",
   "installCommand": "npm install"
 }
->>>>>>> development
