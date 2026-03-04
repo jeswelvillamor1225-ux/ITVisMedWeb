@@ -32,6 +32,10 @@
       "dest": "/index.html"
     },
     {
+      "src": "/it-portal",
+      "dest": "/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }

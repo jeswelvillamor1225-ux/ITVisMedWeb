@@ -2,6 +2,7 @@
 @import './styles/documentary.css';
 @import './styles/admin-portal.css';
 @import './styles/admin-website.css';
+@import './styles/it-portal.css';
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
