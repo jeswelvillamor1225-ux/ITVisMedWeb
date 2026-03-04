@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useAnnouncements } from '../contexts/AnnouncementContext';
 
 const UserDashboard: React.FC = () => {
   const { user, userRoles, logout } = useAuth();
@@ -19,23 +20,7 @@ const UserDashboard: React.FC = () => {
     { id: '#1232', subject: 'Software installation request', priority: 'Low', status: 'Resolved', date: '1 day ago' }
   ]);
 
-  const [announcements] = useState([
-    {
-      title: '🔒 Scheduled Maintenance – March 1, 2026',
-      meta: 'Posted by Admin · Feb 26, 2026',
-      body: 'The hospital network will undergo scheduled maintenance on March 1, 2026 from 12:00 AM – 4:00 AM. Please save all work beforehand. Critical systems will remain operational.'
-    },
-    {
-      title: '🖥️ New Workstations Deployed in Ward 3 & 4',
-      meta: 'Posted by Admin · Feb 20, 2026',
-      body: 'Upgraded workstations have been deployed in Wards 3 and 4. Staff should log in using existing credentials. Contact IT Help Desk for any issues.'
-    },
-    {
-      title: '🔐 Password Policy Update – Action Required',
-      meta: 'Posted by Admin · Feb 10, 2026',
-      body: 'All staff must update their passwords by February 28, 2026. Passwords must be at least 12 characters and include uppercase, lowercase, numbers, and symbols.'
-    }
-  ]);
+  const { announcements } = useAnnouncements();
 
   useEffect(() => {
     // Update stats based on user role
@@ -285,13 +270,21 @@ const UserDashboard: React.FC = () => {
               <p>Latest updates from IT Department</p>
             </div>
             <div className="announcements-list">
-              {announcements.map((announcement, index) => (
-                <div key={index} className="announce-item">
-                  <div className="announce-title">{announcement.title}</div>
-                  <div className="announce-meta">{announcement.meta}</div>
-                  <div className="announce-body">{announcement.body}</div>
+              {announcements.length === 0 ? (
+                <div className="announce-item">
+                  <div className="announce-title">📣 No announcements yet</div>
+                  <div className="announce-meta">Posted by Admin · Just now</div>
+                  <div className="announce-body">Create your first announcement using the admin portal!</div>
                 </div>
-              ))}
+              ) : (
+                announcements.map((announcement) => (
+                  <div key={announcement.id} className="announce-item">
+                    <div className="announce-title">{announcement.title}</div>
+                    <div className="announce-meta">Posted by {announcement.author} · {announcement.date}</div>
+                    <div className="announce-body">{announcement.content}</div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}

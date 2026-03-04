@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useAnnouncements } from '../contexts/AnnouncementContext';
 
 interface Announcement {
   id: string;
@@ -21,8 +22,8 @@ interface Photo {
 
 const AdminWebsite: React.FC = () => {
   const { user, userRoles } = useAuth();
+  const { announcements, addAnnouncement, deleteAnnouncement } = useAnnouncements();
   const [activeTab, setActiveTab] = useState('announcements');
-  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [newAnnouncement, setNewAnnouncement] = useState({
     title: '',
@@ -36,20 +37,7 @@ const AdminWebsite: React.FC = () => {
     url: ''
   });
 
-  // Load existing data
-  useEffect(() => {
-    // Load announcements from localStorage
-    const savedAnnouncements = localStorage.getItem('adminAnnouncements');
-    if (savedAnnouncements) {
-      setAnnouncements(JSON.parse(savedAnnouncements));
-    }
-
-    // Load photos from localStorage
-    const savedPhotos = localStorage.getItem('adminPhotos');
-    if (savedPhotos) {
-      setPhotos(JSON.parse(savedPhotos));
-    }
-  }, []);
+  // Load existing data is now handled by AnnouncementContext
 
   const handleCreateAnnouncement = () => {
     if (!newAnnouncement.title || !newAnnouncement.content) {
@@ -66,9 +54,7 @@ const AdminWebsite: React.FC = () => {
       author: user?.email || 'Admin'
     };
 
-    const updatedAnnouncements = [announcement, ...announcements];
-    setAnnouncements(updatedAnnouncements);
-    localStorage.setItem('adminAnnouncements', JSON.stringify(updatedAnnouncements));
+    addAnnouncement(announcement);
 
     // Reset form
     setNewAnnouncement({ title: '', content: '', priority: 'normal' });
@@ -76,9 +62,8 @@ const AdminWebsite: React.FC = () => {
   };
 
   const handleDeleteAnnouncement = (id: string) => {
-    const updatedAnnouncements = announcements.filter(ann => ann.id !== id);
-    setAnnouncements(updatedAnnouncements);
-    localStorage.setItem('adminAnnouncements', JSON.stringify(updatedAnnouncements));
+    deleteAnnouncement(id);
+    alert('Announcement deleted successfully!');
   };
 
   const handleUploadPhoto = () => {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AuthProvider } from './contexts/AuthContext';
+import { AnnouncementProvider } from './contexts/AnnouncementContext';
 import VISMEDWebsite from './VISMEDWebsite';
 import AuthForms from './components/AuthForms';
 import UserDashboard from './components/UserDashboard';
@@ -59,12 +60,14 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className="app">
-        {renderPage()}
-        {showAuthModal && (
-          <AuthForms onClose={() => setShowAuthModal(false)} />
-        )}
-      </div>
+      <AnnouncementProvider>
+        <div className="app">
+          {renderPage()}
+          {showAuthModal && (
+            <AuthForms onClose={() => setShowAuthModal(false)} />
+          )}
+        </div>
+      </AnnouncementProvider>
     </AuthProvider>
   );
 }
