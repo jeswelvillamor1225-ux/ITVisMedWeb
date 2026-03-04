@@ -189,6 +189,48 @@ const AdminDashboard: React.FC = () => {
             ))}
           </div>
 
+          {/* Admin Modules */}
+          <div className="admin-modules">
+            <div className="modules-header">Admin Modules</div>
+            <div className="modules-grid">
+              <button 
+                className="module-card" 
+                onClick={() => window.location.href = '/admin-website'}
+              >
+                <div className="module-icon">🌐</div>
+                <div className="module-title">Website Manager</div>
+                <div className="module-description">Manage announcements, photos, and settings</div>
+              </button>
+              
+              <button 
+                className="module-card" 
+                onClick={() => window.location.href = '/admin-portal'}
+              >
+                <div className="module-icon">📝</div>
+                <div className="module-title">Content Editor</div>
+                <div className="module-description">Edit website content and navigation</div>
+              </button>
+              
+              <button 
+                className="module-card" 
+                onClick={() => window.location.href = '/tickets'}
+              >
+                <div className="module-icon">🎫</div>
+                <div className="module-title">Support Tickets</div>
+                <div className="module-description">Handle user support requests</div>
+              </button>
+              
+              <button 
+                className="module-card" 
+                onClick={() => window.location.href = '/it-portal'}
+              >
+                <div className="module-icon">💻</div>
+                <div className="module-title">IT Portal</div>
+                <div className="module-description">IT services and documentation</div>
+              </button>
+            </div>
+          </div>
+
           {/* Activity Feed */}
           <div className="activity-feed">
             <div className="activity-header">Recent Activity</div>

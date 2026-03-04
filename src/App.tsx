@@ -3,11 +3,11 @@ import { AuthProvider } from './contexts/AuthContext';
 import { AnnouncementProvider } from './contexts/AnnouncementContext';
 import VISMEDWebsite from './VISMEDWebsite';
 import AuthForms from './components/AuthForms';
-import UserDashboard from './components/UserDashboard';
 import AdminPage from './components/AdminPage';
 import AdminTickets from './components/AdminTickets';
 import AdminWebsite from './components/AdminWebsite.tsx';
 import ITPortal from './components/ITPortal';
+import AdminDashboard from './components/AdminDashboard';
 import AdminPortal from './components/AdminPortal';
 import './index.css';
 
@@ -25,10 +25,10 @@ function App() {
       const path = window.location.pathname;
       if (path === '/admin') {
         setCurrentPage('admin');
-      } else if (path === '/tickets') {
-        setCurrentPage('tickets');
       } else if (path === '/dashboard') {
         setCurrentPage('dashboard');
+      } else if (path === '/tickets') {
+        setCurrentPage('tickets');
       } else if (path === '/admin-website') {
         setCurrentPage('admin-website');
       } else if (path === '/it-portal') {
@@ -53,10 +53,10 @@ function App() {
     switch (currentPage) {
       case 'admin':
         return <AdminPage />;
+      case 'dashboard':
+        return <AdminDashboard />;
       case 'tickets':
         return <AdminTickets />;
-      case 'dashboard':
-        return <UserDashboard />;
       case 'admin-website':
         return <AdminWebsite />;
       case 'it-portal':
