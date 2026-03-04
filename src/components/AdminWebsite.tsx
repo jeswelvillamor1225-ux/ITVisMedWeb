@@ -2,15 +2,6 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAnnouncements } from '../contexts/AnnouncementContext';
 
-interface Announcement {
-  id: string;
-  title: string;
-  content: string;
-  priority: 'normal' | 'high' | 'urgent';
-  date: string;
-  author: string;
-}
-
 interface Photo {
   id: string;
   title: string;
@@ -22,79 +13,21 @@ interface Photo {
 
 const AdminWebsite: React.FC = () => {
   const { user, userRoles } = useAuth();
-  const { announcements, addAnnouncement, deleteAnnouncement } = useAnnouncements();
+  const { announcements } = useAnnouncements();
   const [activeTab, setActiveTab] = useState('announcements');
   const [photos, setPhotos] = useState<Photo[]>([]);
-  const [newAnnouncement, setNewAnnouncement] = useState({
-    title: '',
-    content: '',
-    priority: 'normal' as const
-  });
-  const [newPhoto, setNewPhoto] = useState({
-    title: '',
-    description: '',
-    category: 'general',
-    url: ''
-  });
 
-  // Load existing data is now handled by AnnouncementContext
-
-  const handleCreateAnnouncement = () => {
-    if (!newAnnouncement.title || !newAnnouncement.content) {
-      alert('Please fill in all fields');
-      return;
+  // Load photos from localStorage
+  React.useEffect(() => {
+    const savedPhotos = localStorage.getItem('adminPhotos');
+    if (savedPhotos) {
+      try {
+        setPhotos(JSON.parse(savedPhotos));
+      } catch (error) {
+        console.error('Error loading photos:', error);
+      }
     }
-
-    const announcement: Announcement = {
-      id: 'ann_' + Date.now(),
-      title: newAnnouncement.title,
-      content: newAnnouncement.content,
-      priority: newAnnouncement.priority,
-      date: new Date().toISOString().split('T')[0],
-      author: user?.email || 'Admin'
-    };
-
-    addAnnouncement(announcement);
-
-    // Reset form
-    setNewAnnouncement({ title: '', content: '', priority: 'normal' });
-    alert('Announcement created successfully!');
-  };
-
-  const handleDeleteAnnouncement = (id: string) => {
-    deleteAnnouncement(id);
-    alert('Announcement deleted successfully!');
-  };
-
-  const handleUploadPhoto = () => {
-    if (!newPhoto.title || !newPhoto.description || !newPhoto.url) {
-      alert('Please fill in all fields');
-      return;
-    }
-
-    const photo: Photo = {
-      id: 'photo_' + Date.now(),
-      title: newPhoto.title,
-      description: newPhoto.description,
-      url: newPhoto.url,
-      category: newPhoto.category,
-      date: new Date().toISOString().split('T')[0]
-    };
-
-    const updatedPhotos = [photo, ...photos];
-    setPhotos(updatedPhotos);
-    localStorage.setItem('adminPhotos', JSON.stringify(updatedPhotos));
-
-    // Reset form
-    setNewPhoto({ title: '', description: '', category: 'general', url: '' });
-    alert('Photo uploaded successfully!');
-  };
-
-  const handleDeletePhoto = (id: string) => {
-    const updatedPhotos = photos.filter(photo => photo.id !== id);
-    setPhotos(updatedPhotos);
-    localStorage.setItem('adminPhotos', JSON.stringify(updatedPhotos));
-  };
+  }, []);
 
   if (!userRoles?.isAdmin) {
     return (
@@ -157,55 +90,16 @@ const AdminWebsite: React.FC = () => {
         {activeTab === 'announcements' && (
           <div className="tab-content">
             <div className="content-header">
-              <h2>📣 Manage Announcements</h2>
-              <p>Create and manage announcements for your website</p>
+              <h2>📣 Announcements</h2>
+              <p>View all announcements created from the admin portal</p>
             </div>
 
-            {/* Create Announcement Form */}
+            {/* Announcements Display */}
             <div className="card">
-              <h3>Create New Announcement</h3>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Title</label>
-                  <input
-                    type="text"
-                    value={newAnnouncement.title}
-                    onChange={(e) => setNewAnnouncement({...newAnnouncement, title: e.target.value})}
-                    placeholder="Enter announcement title"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Priority</label>
-                  <select
-                    value={newAnnouncement.priority}
-                    onChange={(e) => setNewAnnouncement({...newAnnouncement, priority: e.target.value as any})}
-                  >
-                    <option value="normal">Normal</option>
-                    <option value="high">High</option>
-                    <option value="urgent">Urgent</option>
-                  </select>
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Content</label>
-                <textarea
-                  rows={4}
-                  value={newAnnouncement.content}
-                  onChange={(e) => setNewAnnouncement({...newAnnouncement, content: e.target.value})}
-                  placeholder="Enter announcement content"
-                />
-              </div>
-              <button className="btn-primary" onClick={handleCreateAnnouncement}>
-                📣 Create Announcement
-              </button>
-            </div>
-
-            {/* Existing Announcements */}
-            <div className="card">
-              <h3>Existing Announcements</h3>
+              <h3>Latest Announcements</h3>
               <div className="announcements-list">
                 {announcements.length === 0 ? (
-                  <p className="no-items">No announcements yet</p>
+                  <p className="no-items">No announcements yet. Create announcements in the admin portal!</p>
                 ) : (
                   announcements.map((announcement) => (
                     <div key={announcement.id} className="announcement-item">
@@ -216,12 +110,6 @@ const AdminWebsite: React.FC = () => {
                             {announcement.priority.toUpperCase()}
                           </span>
                           <span className="date">{announcement.date}</span>
-                          <button 
-                            className="delete-btn"
-                            onClick={() => handleDeleteAnnouncement(announcement.id)}
-                          >
-                            🗑️
-                          </button>
                         </div>
                       </div>
                       <p>{announcement.content}</p>
@@ -240,61 +128,11 @@ const AdminWebsite: React.FC = () => {
         {activeTab === 'photos' && (
           <div className="tab-content">
             <div className="content-header">
-              <h2>📸 Photo Gallery Management</h2>
-              <p>Upload and manage photos for your website</p>
+              <h2>📸 Photo Gallery</h2>
+              <p>View uploaded photos for your website</p>
             </div>
 
-            {/* Upload Photo Form */}
-            <div className="card">
-              <h3>Upload New Photo</h3>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Title</label>
-                  <input
-                    type="text"
-                    value={newPhoto.title}
-                    onChange={(e) => setNewPhoto({...newPhoto, title: e.target.value})}
-                    placeholder="Enter photo title"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Category</label>
-                  <select
-                    value={newPhoto.category}
-                    onChange={(e) => setNewPhoto({...newPhoto, category: e.target.value})}
-                  >
-                    <option value="general">General</option>
-                    <option value="events">Events</option>
-                    <option value="facilities">Facilities</option>
-                    <option value="staff">Staff</option>
-                    <option value="services">Services</option>
-                  </select>
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Description</label>
-                <textarea
-                  rows={3}
-                  value={newPhoto.description}
-                  onChange={(e) => setNewPhoto({...newPhoto, description: e.target.value})}
-                  placeholder="Enter photo description"
-                />
-              </div>
-              <div className="form-group">
-                <label>Photo URL</label>
-                <input
-                  type="url"
-                  value={newPhoto.url}
-                  onChange={(e) => setNewPhoto({...newPhoto, url: e.target.value})}
-                  placeholder="Enter photo URL (e.g., https://example.com/photo.jpg)"
-                />
-              </div>
-              <button className="btn-primary" onClick={handleUploadPhoto}>
-                📸 Upload Photo
-              </button>
-            </div>
-
-            {/* Existing Photos */}
+            {/* Photos Display */}
             <div className="card">
               <h3>Photo Gallery</h3>
               <div className="photos-grid">
@@ -318,12 +156,6 @@ const AdminWebsite: React.FC = () => {
                             <span className="category-badge">{photo.category}</span>
                             <span className="date">{photo.date}</span>
                           </div>
-                          <button 
-                            className="delete-btn"
-                            onClick={() => handleDeletePhoto(photo.id)}
-                          >
-                            🗑️
-                          </button>
                         </div>
                       </div>
                     </div>
