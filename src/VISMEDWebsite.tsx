@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useAuth } from './contexts/AuthContext';
+import DocumentaryGallery from './components/DocumentaryGallery';
 
 const VISMEDWebsite = () => {
   const { user } = useAuth();
@@ -76,9 +77,9 @@ const VISMEDWebsite = () => {
 
         <div className="nav-links">
           <a href="#" className="active">Home</a>
-          <a href="/admin">Admin Portal</a>
           <a href="#services">Services</a>
           <a href="#team">Our Team</a>
+          <a href="#documentary">Documentary</a>
           <a href="#announcements">Announcements</a>
           <a href="#contact">Contact Us</a>
           <a href="#" onClick={(e) => { e.preventDefault(); handleAuthClick(); }}>Sign In/Up</a>
@@ -263,6 +264,9 @@ const VISMEDWebsite = () => {
           </div>
         </div>
       </section>
+
+      {/* DOCUMENTARY GALLERY */}
+      <DocumentaryGallery />
 
       {/* ANNOUNCEMENTS */}
       <section className="section announcements" id="announcements">

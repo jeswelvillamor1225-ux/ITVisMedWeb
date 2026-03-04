@@ -1,4 +1,7 @@
 @import './styles/auth.css';
+@import './styles/documentary.css';
+@import './styles/admin.css';
+@import './styles/tickets.css';
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
