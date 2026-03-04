@@ -6,8 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "copy-admin": "node -e \"const fs = require('fs'); const files = ['admin.html', 'admin-tickets.html', 'admin-announcements.html', 'admin-dashboard.html', 'admin-profile.html']; files.forEach(file => { fs.copyFileSync(file, 'dist/' + file, fs.constants.COPYFILE_FSYNC); }); console.log('Admin files copied to dist/');\"",
-    "build-with-admin": "tsc -b && vite build && npm run copy-admin",
     "lint": "eslint .",
     "preview": "vite preview"
   },
