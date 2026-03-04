@@ -21,6 +21,8 @@ function App() {
       const path = window.location.pathname;
       if (path === '/admin') {
         setCurrentPage('admin');
+      } else if (path === '/tickets') {
+        setCurrentPage('tickets');
       } else if (path === '/dashboard') {
         setCurrentPage('dashboard');
       } else {
