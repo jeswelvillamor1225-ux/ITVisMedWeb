@@ -36,6 +36,10 @@
       "dest": "/index.html"
     },
     {
+      "src": "/admin-portal",
+      "dest": "/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }

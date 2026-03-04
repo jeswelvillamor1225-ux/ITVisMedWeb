@@ -8,6 +8,7 @@ import AdminPage from './components/AdminPage';
 import AdminTickets from './components/AdminTickets';
 import AdminWebsite from './components/AdminWebsite';
 import ITPortal from './components/ITPortal';
+import AdminPortal from './components/AdminPortal';
 import './index.css';
 
 function App() {
@@ -32,6 +33,8 @@ function App() {
         setCurrentPage('admin-website');
       } else if (path === '/it-portal') {
         setCurrentPage('it-portal');
+      } else if (path === '/admin-portal') {
+        setCurrentPage('admin-portal');
       } else {
         setCurrentPage('home');
       }
@@ -58,6 +61,8 @@ function App() {
         return <AdminWebsite />;
       case 'it-portal':
         return <ITPortal />;
+      case 'admin-portal':
+        return <AdminPortal />;
       default:
         return <VISMEDWebsite />;
     }
