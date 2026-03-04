@@ -1,23 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import ProtectedRoute from './ProtectedRoute';
 
 const UserDashboard: React.FC = () => {
   const { user, userRoles, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('dashboard');
 
-  const availableModules = [
-    { id: 'basic', name: 'Overview', icon: '📊', description: 'Dashboard overview' },
-    { id: 'support', name: 'Support Tickets', icon: '🎫', description: 'Submit and track support requests' },
-    { id: 'billing', name: 'Billing', icon: '💰', description: 'View billing information' },
-    { id: 'inventory', name: 'Inventory', icon: '📦', description: 'View inventory and assets' },
-    { id: 'analytics', name: 'Analytics', icon: '📈', description: 'View analytics and reports' },
-    { id: 'reports', name: 'Reports', icon: '📋', description: 'Generate and view reports' },
-  ];
+  // Mock data for dashboard
+  const [stats, setStats] = useState({
+    openTickets: 0,
+    resolved: 0,
+    pending: 0,
+    totalUsers: 0
+  });
 
-  const userModules = availableModules.filter(module => 
-    userRoles?.modules.includes(module.id)
-  );
+  const [recentTickets] = useState([
+    { id: '#1234', subject: 'Printer not working in ER', priority: 'High', status: 'Open', date: '2 hours ago' },
+    { id: '#1233', subject: 'Cannot access HIS system', priority: 'Medium', status: 'Open', date: '1 day ago' },
+    { id: '#1232', subject: 'Software installation request', priority: 'Low', status: 'Resolved', date: '1 day ago' }
+  ]);
+
+  const [announcements] = useState([
+    {
+      title: '🔒 Scheduled Maintenance – March 1, 2026',
+      meta: 'Posted by Admin · Feb 26, 2026',
+      body: 'The hospital network will undergo scheduled maintenance on March 1, 2026 from 12:00 AM – 4:00 AM. Please save all work beforehand. Critical systems will remain operational.'
+    },
+    {
+      title: '🖥️ New Workstations Deployed in Ward 3 & 4',
+      meta: 'Posted by Admin · Feb 20, 2026',
+      body: 'Upgraded workstations have been deployed in Wards 3 and 4. Staff should log in using existing credentials. Contact IT Help Desk for any issues.'
+    },
+    {
+      title: '🔐 Password Policy Update – Action Required',
+      meta: 'Posted by Admin · Feb 10, 2026',
+      body: 'All staff must update their passwords by February 28, 2026. Passwords must be at least 12 characters and include uppercase, lowercase, numbers, and symbols.'
+    }
+  ]);
+
+  useEffect(() => {
+    // Update stats based on user role
+    setStats({
+      openTickets: recentTickets.filter(t => t.status === 'Open').length,
+      resolved: recentTickets.filter(t => t.status === 'Resolved').length,
+      pending: 1,
+      totalUsers: userRoles?.isAdmin ? 24 : 0
+    });
+  }, [recentTickets, userRoles]);
 
   const handleLogout = async () => {
     try {
@@ -28,241 +56,403 @@ const UserDashboard: React.FC = () => {
     }
   };
 
+  const getUserInitial = () => {
+    return user?.email?.charAt(0).toUpperCase() || '?';
+  };
+
+  const getUserName = () => {
+    return user?.email?.split('@')[0] || 'User';
+  };
+
   return (
-    <div className="user-dashboard">
-      <div className="dashboard-header">
-        <div className="dashboard-header-left">
-          <h1>🏥 VISMED IT Portal</h1>
-          <span>Welcome, {user?.email}</span>
-        </div>
-        <div className="dashboard-header-right">
-          <button 
-            onClick={() => window.location.href = '/admin'}
-            className="btn-outline"
-            style={{ display: userRoles?.isAdmin ? 'block' : 'none' }}
-          >
-            👑 Admin Portal
-          </button>
-          <button onClick={handleLogout} className="btn-logout">
-            🚪 Logout
-          </button>
-        </div>
-      </div>
+    <div className="admin-portal">
+      {/* Background Effects */}
+      <div className="bg-mesh"></div>
+      <div className="bg-grid"></div>
 
-      <div className="dashboard-tabs">
-        {userModules.map((module) => (
-          <button 
-            key={module.id}
-            className={`tab-btn ${activeTab === module.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(module.id)}
-          >
-            {module.icon} {module.name}
-          </button>
-        ))}
-      </div>
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <div className="sidebar-logo">
+          <div className="sidebar-logo-icon">🏥</div>
+          <div className="sidebar-logo-text">
+            <div className="brand">VISAYASMED</div>
+            <div className="sub">IT Portal</div>
+          </div>
+        </div>
 
-      <div className="dashboard-content">
-        {activeTab === 'overview' && (
-          <div className="overview-section">
-            <h2>📊 Dashboard Overview</h2>
-            <div className="overview-grid">
-              <div className="overview-card">
-                <div className="card-icon">🎫</div>
-                <h3>My Tickets</h3>
-                <p className="card-number">3</p>
-                <span className="card-status">2 open, 1 resolved</span>
-              </div>
-              <div className="overview-card">
-                <div className="card-icon">💻</div>
-                <h3>Assigned Devices</h3>
-                <p className="card-number">2</p>
-                <span className="card-status">Laptop, Desktop</span>
-              </div>
-              <div className="overview-card">
-                <div className="card-icon">📅</div>
-                <h3>Pending Requests</h3>
-                <p className="card-number">1</p>
-                <span className="card-status">Software installation</span>
-              </div>
-              <div className="overview-card">
-                <div className="card-icon">🔔</div>
-                <h3>Notifications</h3>
-                <p className="card-number">5</p>
-                <span className="card-status">2 unread</span>
-              </div>
+        <div className="nav-section">
+          <div className="nav-section-label">Main</div>
+          <button 
+            className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
+            onClick={() => setActiveTab('dashboard')}
+          >
+            <span className="icon">📊</span><span className="nav-label">Dashboard</span>
+          </button>
+          <button 
+            className={`nav-item ${activeTab === 'tickets' ? 'active' : ''}`}
+            onClick={() => setActiveTab('tickets')}
+          >
+            <span className="icon">🎫</span><span className="nav-label">Ticket Management</span>
+            <span className="nav-badge">{stats.openTickets}</span>
+          </button>
+          <button 
+            className={`nav-item ${activeTab === 'announcements' ? 'active' : ''}`}
+            onClick={() => setActiveTab('announcements')}
+          >
+            <span className="icon">📣</span><span className="nav-label">Announcements</span>
+          </button>
+          <button 
+            className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`}
+            onClick={() => setActiveTab('profile')}
+          >
+            <span className="icon">👤</span><span className="nav-label">My Profile</span>
+          </button>
+        </div>
+
+        {userRoles?.isAdmin && (
+          <div className="nav-section">
+            <div className="nav-section-label">Admin</div>
+            <button 
+              className={`nav-item ${activeTab === 'user-management' ? 'active' : ''}`}
+              onClick={() => setActiveTab('user-management')}
+            >
+              <span className="icon">👥</span><span className="nav-label">User Management</span>
+            </button>
+            <button 
+              className={`nav-item ${activeTab === 'all-tickets' ? 'active' : ''}`}
+              onClick={() => setActiveTab('all-tickets')}
+            >
+              <span className="icon">📋</span><span className="nav-label">All Tickets</span>
+            </button>
+            <button 
+              className={`nav-item ${activeTab === 'post-announcement' ? 'active' : ''}`}
+              onClick={() => setActiveTab('post-announcement')}
+            >
+              <span className="icon">✏️</span><span className="nav-label">Post Announcement</span>
+            </button>
+          </div>
+        )}
+
+        <div className="sidebar-footer">
+          <div className="user-info">
+            <div className="user-avatar">{getUserInitial()}</div>
+            <div className="user-details">
+              <div className="uname">{getUserName()}</div>
+              <div className="urole">{userRoles?.isAdmin ? 'Administrator' : 'User'}</div>
+            </div>
+          </div>
+          <a href="/" style={{ textDecoration: 'none' }}>
+            <button className="logout-btn" style={{ marginBottom: '8px' }}>🌐 IT Portal</button>
+          </a>
+          <button className="logout-btn" onClick={handleLogout}>⏻ Sign Out</button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="main-content">
+        {/* Dashboard Page */}
+        {activeTab === 'dashboard' && (
+          <div className="page active">
+            <div className="page-header">
+              <h1>Dashboard</h1>
+              <p>Welcome back, {getUserName()}!</p>
             </div>
 
-            <div className="recent-activity">
-              <h3>Recent Activity</h3>
-              <div className="activity-list">
-                <div className="activity-item">
-                  <span className="activity-icon">🎫</span>
-                  <div className="activity-content">
-                    <strong>Ticket #1234</strong> - Printer not working
-                    <span className="activity-time">2 hours ago</span>
-                  </div>
+            <div className="stats-grid">
+              <div className="stat-card blue">
+                <div className="stat-label">Open Tickets</div>
+                <div className="stat-value">{stats.openTickets}</div>
+                <div className="stat-sub">Awaiting resolution</div>
+              </div>
+              <div className="stat-card green">
+                <div className="stat-label">Resolved</div>
+                <div className="stat-value">{stats.resolved}</div>
+                <div className="stat-sub">This month</div>
+              </div>
+              <div className="stat-card orange">
+                <div className="stat-label">Pending</div>
+                <div className="stat-value">{stats.pending}</div>
+                <div className="stat-sub">In progress</div>
+              </div>
+              {userRoles?.isAdmin && (
+                <div className="stat-card red">
+                  <div className="stat-label">Total Users</div>
+                  <div className="stat-value">{stats.totalUsers}</div>
+                  <div className="stat-sub">Registered accounts</div>
                 </div>
-                <div className="activity-item">
-                  <span className="activity-icon">✅</span>
-                  <div className="activity-content">
-                    <strong>Ticket #1232</strong> - Software installation completed
-                    <span className="activity-time">1 day ago</span>
-                  </div>
+              )}
+            </div>
+
+            <div className="card">
+              <div className="card-header">
+                <h2>Recent Tickets</h2>
+                <div className="card-actions">
+                  <button 
+                    className="btn-sm primary"
+                    onClick={() => setActiveTab('tickets')}
+                  >
+                    ＋ New Ticket
+                  </button>
                 </div>
-                <div className="activity-item">
-                  <span className="activity-icon">💻</span>
-                  <div className="activity-content">
-                    <strong>Device assigned</strong> - New laptop configured
-                    <span className="activity-time">3 days ago</span>
-                  </div>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Subject</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentTickets.map((ticket, index) => (
+                    <tr key={index}>
+                      <td>{ticket.id}</td>
+                      <td>{ticket.subject}</td>
+                      <td>
+                        <span className={`priority ${ticket.priority.toLowerCase()}`}>
+                          {ticket.priority}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={`status ${ticket.status.toLowerCase()}`}>
+                          {ticket.status}
+                        </span>
+                      </td>
+                      <td>{ticket.date}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Tickets Page */}
+        {activeTab === 'tickets' && (
+          <div className="page active">
+            <div className="page-header">
+              <h1>My Tickets</h1>
+              <p>Track your IT support requests</p>
+            </div>
+            <div className="card">
+              <div className="card-header">
+                <h2>Support Tickets</h2>
+                <button className="btn-sm primary">＋ Submit Ticket</button>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Subject</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentTickets.map((ticket, index) => (
+                    <tr key={index}>
+                      <td>{ticket.id}</td>
+                      <td>{ticket.subject}</td>
+                      <td>Hardware</td>
+                      <td>
+                        <span className={`priority ${ticket.priority.toLowerCase()}`}>
+                          {ticket.priority}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={`status ${ticket.status.toLowerCase()}`}>
+                          {ticket.status}
+                        </span>
+                      </td>
+                      <td>{ticket.date}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Announcements Page */}
+        {activeTab === 'announcements' && (
+          <div className="page active">
+            <div className="page-header">
+              <h1>Announcements</h1>
+              <p>Latest updates from IT Department</p>
+            </div>
+            <div className="announcements-list">
+              {announcements.map((announcement, index) => (
+                <div key={index} className="announce-item">
+                  <div className="announce-title">{announcement.title}</div>
+                  <div className="announce-meta">{announcement.meta}</div>
+                  <div className="announce-body">{announcement.body}</div>
                 </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Profile Page */}
+        {activeTab === 'profile' && (
+          <div className="page active">
+            <div className="page-header">
+              <h1>My Profile</h1>
+              <p>Your account details</p>
+            </div>
+            <div className="card" style={{ maxWidth: '600px' }}>
+              <div className="profile-avatar">{getUserInitial()}</div>
+              <div className="profile-info">
+                <h3>{getUserName()}</h3>
+                <p><strong>Email:</strong> {user?.email}</p>
+                <p><strong>Role:</strong> {userRoles?.isAdmin ? 'Administrator' : 'User'}</p>
+                <p><strong>Department:</strong> IT Department</p>
+                <p><strong>Status:</strong> <span className="status active">Active</span></p>
               </div>
             </div>
           </div>
         )}
 
-        {activeTab === 'support' && (
-          <ProtectedRoute requiredModule="support">
-            <div className="support-section">
-              <h2>🎫 Support Tickets</h2>
-              <div className="support-actions">
-                <button className="btn-primary">
-                  ➕ Create New Ticket
-                </button>
-              </div>
-              
-              <div className="tickets-list">
-                <div className="ticket-card open">
-                  <div className="ticket-header">
-                    <span className="ticket-id">#1234</span>
-                    <span className="ticket-status open">Open</span>
-                  </div>
-                  <h4>Printer not working in ER</h4>
-                  <p>The main printer in the emergency room is not responding to print jobs.</p>
-                  <div className="ticket-meta">
-                    <span>Created: 2 hours ago</span>
-                    <span>Priority: High</span>
-                  </div>
-                </div>
-
-                <div className="ticket-card open">
-                  <div className="ticket-header">
-                    <span className="ticket-id">#1233</span>
-                    <span className="ticket-status open">Open</span>
-                  </div>
-                  <h4>Cannot access HIS system</h4>
-                  <p>Unable to login to the Hospital Information System from my workstation.</p>
-                  <div className="ticket-meta">
-                    <span>Created: 1 day ago</span>
-                    <span>Priority: Medium</span>
-                  </div>
-                </div>
-
-                <div className="ticket-card resolved">
-                  <div className="ticket-header">
-                    <span className="ticket-id">#1232</span>
-                    <span className="ticket-status resolved">Resolved</span>
-                  </div>
-                  <h4>Software installation request</h4>
-                  <p>Need Microsoft Office installed on new workstation.</p>
-                  <div className="ticket-meta">
-                    <span>Resolved: 1 day ago</span>
-                    <span>Priority: Low</span>
-                  </div>
-                </div>
-              </div>
+        {/* User Management (Admin Only) */}
+        {activeTab === 'user-management' && userRoles?.isAdmin && (
+          <div className="page active">
+            <div className="page-header">
+              <h1>User Management</h1>
+              <p>Manage all registered accounts</p>
             </div>
-          </ProtectedRoute>
+            <div className="card">
+              <div className="card-header">
+                <h2>All Users</h2>
+                <button className="btn-sm primary">＋ Create User</button>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>John Doe</td>
+                    <td>john.doe@visayasmed.com</td>
+                    <td>Emergency Room</td>
+                    <td><span className="role admin">Admin</span></td>
+                    <td><span className="status active">Active</span></td>
+                    <td>
+                      <button className="btn-sm">Edit</button>
+                      <button className="btn-sm danger">Disable</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Jane Smith</td>
+                    <td>jane.smith@visayasmed.com</td>
+                    <td>Laboratory</td>
+                    <td><span className="role user">User</span></td>
+                    <td><span className="status active">Active</span></td>
+                    <td>
+                      <button className="btn-sm">Edit</button>
+                      <button className="btn-sm danger">Disable</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         )}
 
-        {activeTab === 'billing' && (
-          <ProtectedRoute requiredModule="billing">
-            <div className="billing-section">
-              <h2>💰 Billing Information</h2>
-              <div className="billing-summary">
-                <div className="billing-card">
-                  <h3>Current Month</h3>
-                  <p className="amount">₱0.00</p>
-                  <span>No charges this month</span>
-                </div>
-                <div className="billing-card">
-                  <h3>Outstanding Balance</h3>
-                  <p className="amount">₱0.00</p>
-                  <span>All payments up to date</span>
-                </div>
-              </div>
+        {/* All Tickets (Admin Only) */}
+        {activeTab === 'all-tickets' && userRoles?.isAdmin && (
+          <div className="page active">
+            <div className="page-header">
+              <h1>All Tickets</h1>
+              <p>Manage all support tickets</p>
             </div>
-          </ProtectedRoute>
+            <div className="card">
+              <div className="card-header">
+                <h2>All Support Tickets</h2>
+                <button className="btn-sm primary">＋ New Ticket</button>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Subject</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentTickets.map((ticket, index) => (
+                    <tr key={index}>
+                      <td>{ticket.id}</td>
+                      <td>user@example.com</td>
+                      <td>{ticket.subject}</td>
+                      <td>
+                        <span className={`priority ${ticket.priority.toLowerCase()}`}>
+                          {ticket.priority}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={`status ${ticket.status.toLowerCase()}`}>
+                          {ticket.status}
+                        </span>
+                      </td>
+                      <td>{ticket.date}</td>
+                      <td>
+                        <button className="btn-sm">View</button>
+                        <button className="btn-sm">Edit</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         )}
 
-        {activeTab === 'inventory' && (
-          <ProtectedRoute requiredModule="inventory">
-            <div className="inventory-section">
-              <h2>📦 My Inventory</h2>
-              <div className="inventory-list">
-                <div className="inventory-item">
-                  <div className="item-icon">💻</div>
-                  <div className="item-details">
-                    <h4>Dell Laptop - LAT-001</h4>
-                    <p>Assigned: Jan 15, 2026</p>
-                    <span className="item-status good">Good Condition</span>
-                  </div>
-                </div>
-                <div className="inventory-item">
-                  <div className="item-icon">🖥️</div>
-                  <div className="item-details">
-                    <h4>HP Desktop - DESK-045</h4>
-                    <p>Assigned: Dec 1, 2025</p>
-                    <span className="item-status good">Good Condition</span>
-                  </div>
-                </div>
+        {/* Post Announcement (Admin Only) */}
+        {activeTab === 'post-announcement' && userRoles?.isAdmin && (
+          <div className="page active">
+            <div className="page-header">
+              <h1>Post Announcement</h1>
+              <p>Create new announcement for all users</p>
+            </div>
+            <div className="card" style={{ maxWidth: '800px' }}>
+              <div className="form-group">
+                <label>Announcement Title</label>
+                <input type="text" placeholder="Enter announcement title" />
+              </div>
+              <div className="form-group">
+                <label>Message</label>
+                <textarea rows={6} placeholder="Enter announcement message"></textarea>
+              </div>
+              <div className="form-group">
+                <label>Priority</label>
+                <select>
+                  <option>Normal</option>
+                  <option>High</option>
+                  <option>Urgent</option>
+                </select>
+              </div>
+              <div className="form-actions">
+                <button className="btn-primary">Post Announcement</button>
+                <button className="btn-outline">Cancel</button>
               </div>
             </div>
-          </ProtectedRoute>
+          </div>
         )}
-
-        {activeTab === 'analytics' && (
-          <ProtectedRoute requiredModule="analytics">
-            <div className="analytics-section">
-              <h2>📈 Analytics</h2>
-              <div className="analytics-grid">
-                <div className="analytics-card">
-                  <h3>Ticket Trends</h3>
-                  <div className="chart-placeholder">
-                    📊 Chart showing ticket submission trends
-                  </div>
-                </div>
-                <div className="analytics-card">
-                  <h3>Response Times</h3>
-                  <div className="chart-placeholder">
-                    📈 Chart showing average response times
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ProtectedRoute>
-        )}
-
-        {activeTab === 'reports' && (
-          <ProtectedRoute requiredModule="reports">
-            <div className="reports-section">
-              <h2>📋 Reports</h2>
-              <div className="reports-grid">
-                <div className="report-card">
-                  <h3>My Support History</h3>
-                  <p>Download your complete support ticket history.</p>
-                  <button className="btn-outline">Download Report</button>
-                </div>
-                <div className="report-card">
-                  <h3>Inventory Summary</h3>
-                  <p>View summary of all assigned devices.</p>
-                  <button className="btn-outline">Generate Report</button>
-                </div>
-              </div>
-            </div>
-          </ProtectedRoute>
-        )}
-      </div>
+      </main>
     </div>
   );
 };

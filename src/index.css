@@ -1,8 +1,12 @@
 @import './styles/auth.css';
 @import './styles/documentary.css';
+<<<<<<< HEAD
 @import './styles/admin.css';
 @import './styles/tickets.css';
 @import './styles/website.css';
+=======
+@import './styles/admin-portal.css';
+>>>>>>> development
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
