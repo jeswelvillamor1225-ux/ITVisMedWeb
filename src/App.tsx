@@ -5,6 +5,7 @@ import AuthForms from './components/AuthForms';
 import UserDashboard from './components/UserDashboard';
 import AdminPage from './components/AdminPage';
 import AdminTickets from './components/AdminTickets';
+import AdminWebsite from './components/AdminWebsite';
 import './index.css';
 
 function App() {
@@ -25,6 +26,8 @@ function App() {
         setCurrentPage('tickets');
       } else if (path === '/dashboard') {
         setCurrentPage('dashboard');
+      } else if (path === '/admin-website') {
+        setCurrentPage('admin-website');
       } else {
         setCurrentPage('home');
       }
@@ -47,6 +50,8 @@ function App() {
         return <AdminTickets />;
       case 'dashboard':
         return <UserDashboard />;
+      case 'admin-website':
+        return <AdminWebsite />;
       default:
         return <VISMEDWebsite />;
     }

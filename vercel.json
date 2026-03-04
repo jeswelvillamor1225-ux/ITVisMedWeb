@@ -28,6 +28,10 @@
       "dest": "/index.html"
     },
     {
+      "src": "/admin-website",
+      "dest": "/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
