@@ -3,8 +3,8 @@ import { AuthProvider } from './contexts/AuthContext';
 import VISMEDWebsite from './VISMEDWebsite';
 import AuthForms from './components/AuthForms';
 import UserDashboard from './components/UserDashboard';
-import AdminPortal from './components/AdminPortal';
-import ProtectedRoute from './components/ProtectedRoute';
+import AdminPage from './components/AdminPage';
+import AdminTickets from './components/AdminTickets';
 import './index.css';
 
 function App() {
@@ -40,11 +40,9 @@ function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'admin':
-        return (
-          <ProtectedRoute requireAdmin={true}>
-            <AdminPortal />
-          </ProtectedRoute>
-        );
+        return <AdminPage />;
+      case 'tickets':
+        return <AdminTickets />;
       case 'dashboard':
         return <UserDashboard />;
       default:
