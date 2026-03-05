@@ -25,7 +25,7 @@ const DocumentaryGallery: React.FC = () => {
           {
             id: '1',
             type: 'image',
-            src: 'Network Equipment',
+            src: 'network-equipment.jpg',
             title: 'IT Team Building Activity',
             description: 'Team collaboration and bonding session with IT department members.',
             date: 'Feb 2024'
@@ -33,7 +33,7 @@ const DocumentaryGallery: React.FC = () => {
           {
             id: '2',
             type: 'image',
-            src: 'Christmas Party',
+            src: 'christmas-party.jpg',
             title: 'Christmas Denim Party',
             description: 'Annual Christmas celebration and team building event with denim theme.',
             date: 'Feb 2024'
@@ -41,7 +41,7 @@ const DocumentaryGallery: React.FC = () => {
           {
             id: '3',
             type: 'image',
-            src: 'Christmas Party Group',
+            src: 'christmas-group.jpg',
             title: 'Christmas Team Gathering',
             description: 'Christmas party group photo with IT department team members.',
             date: 'Feb 2024'
@@ -49,25 +49,25 @@ const DocumentaryGallery: React.FC = () => {
           {
             id: '4',
             type: 'image',
-            src: 'Team Member Portrait',
+            src: 'team-portrait.jpg',
             title: 'IT Team Member',
-            description: 'Professional portrait of IT department team member.',
+            description: 'Professional portrait of IT department team member showcasing expertise and dedication.',
             date: 'Jan 2024'
           },
           {
             id: '5',
             type: 'image',
-            src: 'Server Work',
+            src: 'server-work.jpg',
             title: 'Server Infrastructure Work',
-            description: 'Technical work on server racks and IT infrastructure.',
+            description: 'Technical work on server racks and IT infrastructure maintenance and upgrades.',
             date: 'Jan 2024'
           },
           {
             id: '6',
             type: 'image',
-            src: 'Technical Documentation',
+            src: 'documentation.jpg',
             title: 'IT Documentation',
-            description: 'Technical documentation and system configuration details.',
+            description: 'Technical documentation and system configuration details for hospital operations.',
             date: 'Jan 2024'
           },
           {
@@ -134,7 +134,7 @@ const DocumentaryGallery: React.FC = () => {
         {
           id: '1',
           type: 'image',
-          src: 'Network Equipment',
+          src: 'network-equipment.jpg',
           title: 'IT Team Building Activity',
           description: 'Team collaboration and bonding session with IT department members.',
           date: 'Feb 2024'
@@ -142,7 +142,7 @@ const DocumentaryGallery: React.FC = () => {
         {
           id: '2',
           type: 'image',
-          src: 'Christmas Party',
+          src: 'christmas-party.jpg',
           title: 'Christmas Denim Party',
           description: 'Annual Christmas celebration and team building event with denim theme.',
           date: 'Feb 2024'
@@ -150,7 +150,7 @@ const DocumentaryGallery: React.FC = () => {
         {
           id: '3',
           type: 'image',
-          src: 'Christmas Party Group',
+          src: 'christmas-group.jpg',
           title: 'Christmas Team Gathering',
           description: 'Christmas party group photo with IT department team members.',
           date: 'Feb 2024'
@@ -158,25 +158,25 @@ const DocumentaryGallery: React.FC = () => {
         {
           id: '4',
           type: 'image',
-          src: 'Team Member Portrait',
+          src: 'team-portrait.jpg',
           title: 'IT Team Member',
-          description: 'Professional portrait of IT department team member.',
+          description: 'Professional portrait of IT department team member showcasing expertise and dedication.',
           date: 'Jan 2024'
         },
         {
           id: '5',
           type: 'image',
-          src: 'Server Work',
+          src: 'server-work.jpg',
           title: 'Server Infrastructure Work',
-          description: 'Technical work on server racks and IT infrastructure.',
+          description: 'Technical work on server racks and IT infrastructure maintenance and upgrades.',
           date: 'Jan 2024'
         },
         {
           id: '6',
           type: 'image',
-          src: 'Technical Documentation',
+          src: 'documentation.jpg',
           title: 'IT Documentation',
-          description: 'Technical documentation and system configuration details.',
+          description: 'Technical documentation and system configuration details for hospital operations.',
           date: 'Jan 2024'
         },
         {
@@ -346,7 +346,8 @@ const DocumentaryGallery: React.FC = () => {
                 <div className="gallery-text-placeholder">
                   <div className="text-icon">🖼️</div>
                   <div className="text-content">
-                    <span className="text-label">{item.src}</span>
+                    <span className="text-label">{item.title}</span>
+                    <span className="text-subtitle">{item.date}</span>
                   </div>
                 </div>
               ) : (
