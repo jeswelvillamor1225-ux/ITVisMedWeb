@@ -4,6 +4,106 @@
 @import './styles/admin-website.css';
 @import './styles/it-portal.css';
 
+/* Custom Links Styles */
+.custom-links-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.hero-links {
+  margin-top: 16px;
+}
+
+.hero-links .custom-link {
+  background: linear-gradient(135deg, #2f80ed, #1a6fd4);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.hero-links .custom-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(47, 128, 237, 0.3);
+}
+
+.custom-services-section {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(47, 128, 237, 0.2);
+}
+
+.custom-services-section .section-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.custom-services-section .section-header h3 {
+  color: #0a1628;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.custom-services-section .section-header p {
+  color: #64748b;
+  font-size: 16px;
+}
+
+.custom-services-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.services-links .custom-link {
+  color: #2f80ed;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  border: 1px solid rgba(47, 128, 237, 0.2);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  background: rgba(47, 128, 237, 0.05);
+}
+
+.services-links .custom-link:hover {
+  color: #1a6fd4;
+  transform: translateX(4px);
+  background: rgba(47, 128, 237, 0.1);
+  border-color: rgba(47, 128, 237, 0.3);
+}
+
+.navigation-links .custom-link {
+  color: #e8f0fe;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.navigation-links .custom-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.footer-links .custom-link {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer-links .custom-link:hover {
+  color: #e8f0fe;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

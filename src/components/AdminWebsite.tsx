@@ -88,6 +88,12 @@ const AdminWebsite: React.FC = () => {
         >
           🖼️ Documentary Manager
         </button>
+        <button 
+          className={`nav-btn ${activeTab === 'links' ? 'active' : ''}`}
+          onClick={() => window.location.href = '/links-manager'}
+        >
+          🔗 Links Manager
+        </button>
       </nav>
 
       {/* Main Content */}

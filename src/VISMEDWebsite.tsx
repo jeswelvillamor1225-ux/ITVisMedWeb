@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useAuth } from './contexts/AuthContext';
 import DocumentaryGallery from './components/DocumentaryGallery';
+import CustomLinks from './components/CustomLinks';
 
 const VISMEDWebsite = () => {
   const { user } = useAuth();
@@ -121,6 +122,7 @@ const VISMEDWebsite = () => {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 5l7 7-7 7M5 12h15"/></svg>
               </a>
               <a href="#contact" className="btn-hero-outline">Submit a Request</a>
+              <CustomLinks category="hero" />
             </div>
             <div className="hero-stats">
               <div className="hero-stat"><strong>99.9%</strong><span>System Uptime</span></div>
@@ -207,6 +209,17 @@ const VISMEDWebsite = () => {
               <h3>IT Training & Onboarding</h3>
               <p>System orientation for new staff and periodic training for software updates, security best practices, and digital tools.</p>
               <a href="#" className="svc-link">Schedule training →</a>
+            </div>
+          </div>
+          
+          {/* Custom Service Links */}
+          <div className="custom-services-section fade-in">
+            <div className="section-header">
+              <h3>Quick Access Links</h3>
+              <p>External systems and resources</p>
+            </div>
+            <div className="custom-services-links">
+              <CustomLinks category="services" />
             </div>
           </div>
         </div>
