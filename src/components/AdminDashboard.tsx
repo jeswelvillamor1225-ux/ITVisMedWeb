@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import CustomLinks from './CustomLinks';
 
 interface ActivityItem {
   id: string;
@@ -160,6 +161,7 @@ const AdminDashboard: React.FC = () => {
           </div>
           
           <div className="user-menu">
+            <CustomLinks category="navigation" />
             <div className="user-avatar">
               {user?.email?.charAt(0).toUpperCase()}
             </div>
@@ -228,6 +230,45 @@ const AdminDashboard: React.FC = () => {
                 <div className="module-title">IT Portal</div>
                 <div className="module-description">IT services and documentation</div>
               </button>
+            </div>
+          </div>
+
+          {/* Custom Links Section */}
+          <div className="custom-links-section">
+            <div className="section-header">Quick Links</div>
+            <CustomLinks category="hero" />
+            
+            {/* Hardcoded test button */}
+            <div style={{marginTop: '20px'}}>
+              <a 
+                href="http://192.168.1.8/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{
+                  background: 'linear-gradient(135deg, #2f80ed, #1a6fd4)',
+                  color: 'white',
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  fontWeight: '500',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '15px',
+                  border: '1px solid rgba(47, 128, 237, 0.3)',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 25px rgba(47, 128, 237, 0.3)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                🖥️ Local Server
+              </a>
             </div>
           </div>
 

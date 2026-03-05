@@ -81,12 +81,14 @@ const VISMEDWebsite = () => {
           <a href="#services">Services</a>
           <a href="#team">Our Team</a>
           <a href="#documentary">Documentary</a>
+          <a href="#links">Links</a>
           <a href="#announcements">Announcements</a>
           <a href="#contact">Contact Us</a>
           <a href="#" onClick={(e) => { e.preventDefault(); handleAuthClick(); }}>Sign In/Up</a>
         </div>
 
         <div className="nav-actions">
+          <CustomLinks category="navigation" />
           <button className="btn-outline" onClick={() => {
             const contact = document.getElementById('contact');
             if (contact) {
@@ -139,14 +141,14 @@ const VISMEDWebsite = () => {
                 <p>ISO 27001 compliant infrastructure</p>
               </div>
               <div className="hcard">
-                <div className="hcard-icon">🖥️</div>
-                <h4>HIS / EMR</h4>
-                <p>Integrated hospital systems</p>
+                <div className="hcard-icon">☁️</div>
+                <h4>Cloud Solutions</h4>
+                <p>Scalable cloud infrastructure</p>
               </div>
               <div className="hcard">
-                <div className="hcard-icon">📡</div>
-                <h4>Network Ops</h4>
-                <p>Campus-wide connectivity</p>
+                <div className="hcard-icon">📊</div>
+                <h4>Analytics</h4>
+                <p>Data-driven insights</p>
               </div>
             </div>
           </div>
@@ -158,65 +160,46 @@ const VISMEDWebsite = () => {
         <div className="container">
           <div className="section-header fade-in">
             <div className="section-tag">What We Do</div>
-            <h2>IT Services & Support</h2>
-            <p>Comprehensive technology services designed to keep VISMED Hospital running at peak performance.</p>
-          </div>
-          <div className="services-grid">
-            <div className="service-card fade-in">
-              <div className="svc-icon">🖥️</div>
-              <h3>Help Desk & Technical Support</h3>
-              <p>First-line IT support for all hospital staff. Hardware troubleshooting, software assistance, and account management.</p>
-              <a href="#contact" className="svc-link">Submit a ticket →</a>
-            </div>
-            <div className="service-card fade-in">
-              <div className="svc-icon">🏥</div>
-              <h3>Hospital Information System</h3>
-              <p>Administration and support for the HIS/EMR platform, ensuring clinical workflows run smoothly for all departments.</p>
-              <a href="#" className="svc-link">Learn more →</a>
-            </div>
-            <div className="service-card fade-in">
-              <div className="svc-icon">📡</div>
-              <h3>Network & Connectivity</h3>
-              <p>Wired and wireless network management across all hospital buildings, ensuring fast and reliable connections.</p>
-              <a href="#" className="svc-link">Network status →</a>
-            </div>
-            <div className="service-card fade-in">
-              <div className="svc-icon">🛡️</div>
-              <h3>Cybersecurity & Compliance</h3>
-              <p>Data protection, firewall management, threat monitoring, and compliance with healthcare data security regulations.</p>
-              <a href="#" className="svc-link">Security policy →</a>
-            </div>
-            <div className="service-card fade-in">
-              <div className="svc-icon">☁️</div>
-              <h3>Server & Cloud Infrastructure</h3>
-              <p>On-premise server administration and cloud service management to ensure high availability of critical systems.</p>
-              <a href="#" className="svc-link">Infrastructure map →</a>
-            </div>
-            <div className="service-card fade-in">
-              <div className="svc-icon">📊</div>
-              <h3>Data Management & Reporting</h3>
-              <p>Database administration, backup systems, and business intelligence tools for hospital analytics and decision-making.</p>
-              <a href="#" className="svc-link">Data portal →</a>
-            </div>
-            <div className="service-card fade-in">
-              <div className="svc-icon">📱</div>
-              <h3>Device & Asset Management</h3>
-              <p>Inventory tracking, provisioning, and lifecycle management for all hospital computers, tablets, and medical devices.</p>
-              <a href="#" className="svc-link">Asset portal →</a>
-            </div>
-            <div className="service-card fade-in">
-              <div className="svc-icon">🎓</div>
-              <h3>IT Training & Onboarding</h3>
-              <p>System orientation for new staff and periodic training for software updates, security best practices, and digital tools.</p>
-              <a href="#" className="svc-link">Schedule training →</a>
-            </div>
+            <h2>IT Services</h2>
+            <p>Comprehensive technology solutions supporting healthcare operations</p>
           </div>
           
-          {/* Custom Service Links */}
-          <div className="custom-services-section fade-in">
+          <div className="services-grid">
+            <div className="service-card fade-in">
+              <div className="service-icon">🏥</div>
+              <h3>HIS Support</h3>
+              <p>24/7 Hospital Information System maintenance and user support</p>
+            </div>
+            <div className="service-card fade-in">
+              <div className="service-icon">🔐</div>
+              <h3>Security</h3>
+              <p>Advanced cybersecurity measures and compliance management</p>
+            </div>
+            <div className="service-card fade-in">
+              <div className="service-icon">🌐</div>
+              <h3>Network Infrastructure</h3>
+              <p>Reliable high-speed network connectivity across all facilities</p>
+            </div>
+            <div className="service-card fade-in">
+              <div className="service-icon">💾</div>
+              <h3>Data Management</h3>
+              <p>Secure backup, recovery, and data governance solutions</p>
+            </div>
+            <div className="service-card fade-in">
+              <div className="service-icon">📱</div>
+              <h3>Mobile Solutions</h3>
+              <p>Mobile applications for healthcare providers and patients</p>
+            </div>
+            <div className="service-card fade-in">
+              <div className="service-icon">🔧</div>
+              <h3>Technical Support</h3>
+              <p>Help desk and hardware maintenance services</p>
+            </div>
+          </div>
+
+          <div className="custom-services-section">
             <div className="section-header">
-              <h3>Quick Access Links</h3>
-              <p>External systems and resources</p>
+              <h3>Additional Resources</h3>
             </div>
             <div className="custom-services-links">
               <CustomLinks category="services" />
@@ -226,53 +209,34 @@ const VISMEDWebsite = () => {
       </section>
 
       {/* TEAM */}
-      <section className="section" id="team">
+      <section className="section team" id="team">
         <div className="container">
           <div className="section-header fade-in">
-            <div className="section-tag">Our People</div>
-            <h2>Meet the IT Team</h2>
-            <p>Dedicated professionals ensuring seamless technology across VISMED Hospital.</p>
+            <div className="section-tag">Our Team</div>
+            <h2>IT Professionals</h2>
+            <p>Skilled professionals dedicated to healthcare technology excellence</p>
           </div>
+          
           <div className="team-grid">
             <div className="team-card fade-in">
               <div className="team-avatar">👨‍💼</div>
-              <div className="team-info">
-                <h4>Romel B. Banquil</h4>
-                <span>IT Manager</span>
-                <p>Infrastructure & Operations Lead</p>
-              </div>
+              <h4>IT Director</h4>
+              <p>Strategic technology planning and department leadership</p>
             </div>
             <div className="team-card fade-in">
               <div className="team-avatar">👩‍💻</div>
-              <div className="team-info">
-                <h4>Loudisah "liling" Laspiñas</h4>
-                <span>Systems Analyst</span>
-                <p>HIS / EMR Integration</p>
-              </div>
+              <h4>System Administrator</h4>
+              <p>Server management and system optimization</p>
             </div>
             <div className="team-card fade-in">
               <div className="team-avatar">👨‍🔧</div>
-              <div className="team-info">
-                <h4>John Agustin Baylon</h4>
-                <span>Network Engineer Sr. Staff</span>
-                <p>LAN / WAN & Connectivity</p>
-              </div>
+              <h4>Network Engineer</h4>
+              <p>Network infrastructure and connectivity management</p>
             </div>
             <div className="team-card fade-in">
-              <div className="team-avatar">👩‍🛡️</div>
-              <div className="team-info">
-                <h4>Jeswel B. Villamor</h4>
-                <span>Network Engineer Jr. Staff</span>
-                <p>LAN / WAN & Connectivity</p>
-              </div>
-            </div>
-            <div className="team-card fade-in">
-              <div className="team-avatar">👨‍💻</div>
-              <div className="team-info">
-                <h4>John Roli Yakit, Aljun Montecalvo, Angelu Banogbanog, Kerry Ecuasion</h4>
-                <span>IT OJT'S</span>
-                <p>Help Desk & Hardware</p>
-              </div>
+              <div className="team-avatar">👩‍🔧</div>
+              <h4>Support Specialist</h4>
+              <p>Technical support and user assistance</p>
             </div>
           </div>
         </div>
@@ -280,6 +244,22 @@ const VISMEDWebsite = () => {
 
       {/* DOCUMENTARY GALLERY */}
       <DocumentaryGallery />
+
+      {/* LINKS SECTION */}
+      <section className="section links" id="links">
+        <div className="container">
+          <div className="section-header fade-in">
+            <div className="section-tag">Quick Access</div>
+            <h2>Useful Links</h2>
+            <p>Quick access to important systems, resources, and external services.</p>
+          </div>
+          
+          <div className="links-content">
+            <CustomLinks category="hero" />
+            <CustomLinks category="services" />
+          </div>
+        </div>
+      </section>
 
       {/* ANNOUNCEMENTS */}
       <section className="section announcements" id="announcements">
@@ -292,52 +272,28 @@ const VISMEDWebsite = () => {
           <div className="ann-grid">
             <div className="ann-list">
               <div className="ann-card fade-in">
-                <div className="ann-date"><strong>28</strong><span>Feb</span></div>
-                <div className="ann-body">
-                  <span className="ann-tag maintenance">🔧 Maintenance</span>
-                  <h4>Scheduled Network Maintenance – 3rd Floor</h4>
-                  <p>Network switches on the 3rd floor will undergo preventive maintenance on March 1, 2:00–4:00 AM. Temporary disruptions expected.</p>
+                <div className="ann-icon">🔔</div>
+                <div className="ann-content">
+                  <h4>System Maintenance</h4>
+                  <p>Scheduled maintenance this weekend - expect brief downtime</p>
+                  <span className="ann-date">2 hours ago</span>
                 </div>
               </div>
               <div className="ann-card fade-in">
-                <div className="ann-date"><strong>25</strong><span>Feb</span></div>
-                <div className="ann-body">
-                  <span className="ann-tag upgrade">⬆️ Upgrade</span>
-                  <h4>HIS Platform Updated to Version 4.7</h4>
-                  <p>The Hospital Information System has been updated. Please clear browser cache and log in again. New features include improved billing module and faster lab results view.</p>
+                <div className="ann-icon">🛡️</div>
+                <div className="ann-content">
+                  <h4>Security Update</h4>
+                  <p>New security patches deployed across all systems</p>
+                  <span className="ann-date">1 day ago</span>
                 </div>
               </div>
               <div className="ann-card fade-in">
-                <div className="ann-date"><strong>20</strong><span>Feb</span></div>
-                <div className="ann-body">
-                  <span className="ann-tag security">🔒 Security</span>
-                  <h4>Mandatory Password Reset – All Staff Accounts</h4>
-                  <p>All hospital staff are required to reset their Active Directory passwords by March 5. Please follow the new 12-character policy.</p>
+                <div className="ann-icon">📱</div>
+                <div className="ann-content">
+                  <h4>Mobile App Update</h4>
+                  <p>New features added to the hospital mobile application</p>
+                  <span className="ann-date">3 days ago</span>
                 </div>
-              </div>
-              <div className="ann-card fade-in">
-                <div className="ann-date"><strong>15</strong><span>Feb</span></div>
-                <div className="ann-body">
-                  <span className="ann-tag training">📚 Training</span>
-                  <h4>IT Security Awareness Seminar – All Departments</h4>
-                  <p>Mandatory phishing awareness and data security training for all staff. Schedule your slot via the IT portal before March 10.</p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="sidebar-widget fade-in" style={{marginBottom:'1rem'}}>
-                <h3>⚡ Quick Links</h3>
-                <a href="#" className="quick-link"><div className="quick-link-icon">🎫</div> Submit IT Ticket</a>
-                <a href="#" className="quick-link"><div className="quick-link-icon">🔑</div> Password Reset</a>
-                <a href="#" className="quick-link"><div className="quick-link-icon">📦</div> Asset Request</a>
-                <a href="#" className="quick-link"><div className="quick-link-icon">🖨️</div> Printer Setup Guide</a>
-                <a href="#" className="quick-link"><div className="quick-link-icon">📡</div> Network Status</a>
-                <a href="#" className="quick-link"><div className="quick-link-icon">📋</div> IT Forms & Policies</a>
-              </div>
-              <div className="sidebar-widget fade-in">
-                <h3>📞 Emergency IT Contacts</h3>
-                <a href="tel:+3225310001" className="quick-link"><div className="quick-link-icon">☎️</div> Help Desk Ext. 1001</a>
-                <a href="tel:+3225310002" className="quick-link"><div className="quick-link-icon">📟</div> On-call: 0917-XXX-XXXX</a>
               </div>
             </div>
           </div>
@@ -345,137 +301,55 @@ const VISMEDWebsite = () => {
       </section>
 
       {/* CONTACT */}
-      <section className="contact-section" id="contact">
-        <div className="contact-grid">
-          <div className="contact-left fade-in">
-            <div className="section-tag" style={{background:'rgba(59,158,255,.15)',borderColor:'rgba(59,158,255,.3)',color:'var(--bright)'}}>Get In Touch</div>
-            <h2>How Can We <em>Help</em> You?</h2>
-            <p>Reach out to the VISMED IT Department for technical support, system requests, or general IT inquiries. Our team is here to assist you.</p>
-            <div className="contact-details">
-              <div className="contact-item">
-                <div className="contact-item-icon">📍</div>
-                <div className="contact-item-text">
-                  <strong>Location</strong>
-                  <span>IT Department, 1st Floor – Admin Building, VISMED Hospital Cebu</span>
-                </div>
-              </div>
-              <div className="contact-item">
-                <div className="contact-item-icon">📞</div>
-                <div className="contact-item-text">
-                  <strong>Help Desk</strong>
-                  <span>Local 1001 | (+32) 253-1901 ext. 1001</span>
-                </div>
-              </div>
-              <div className="contact-item">
-                <div className="contact-item-icon">📧</div>
-                <div className="contact-item-text">
-                  <strong>Email</strong>
-                  <span>it@visayasmed.com.ph</span>
-                </div>
-              </div>
-              <div className="contact-item">
-                <div className="contact-item-icon">🕐</div>
-                <div className="contact-item-text">
-                  <strong>Office Hours</strong>
-                  <span>Monday – Sunday: 8:00 AM – 5:00 PM</span>
-                </div>
-              </div>
-            </div>
+      <section className="section contact" id="contact">
+        <div className="container">
+          <div className="section-header fade-in">
+            <div className="section-tag">Get In Touch</div>
+            <h2>Contact IT Support</h2>
+            <p>Reach out to our team for technical assistance and inquiries</p>
           </div>
-          <div className="contact-form fade-in">
-            <h3>📋 Submit an IT Request</h3>
-            <div className="form-row">
-              <div className="form-group">
-                <label>First Name</label>
-                <input type="text" placeholder="Juan"/>
-              </div>
-              <div className="form-group">
-                <label>Last Name</label>
-                <input type="text" placeholder="Dela Cruz"/>
-              </div>
+          
+          <div className="contact-grid">
+            <div className="contact-card fade-in">
+              <div className="contact-icon">📞</div>
+              <h3>Help Desk</h3>
+              <p>(+32) 253-1901</p>
+              <span>Mon-Sun 8AM-5PM</span>
             </div>
-            <div className="form-group">
-              <label>Department / Unit</label>
-              <select>
-                <option value="">Select your department</option>
-                <option>Emergency Room</option>
-                <option>Nursing Unit</option>
-                <option>Radiology</option>
-                <option>Laboratory</option>
-                <option>Pharmacy</option>
-                <option>Finance & Billing</option>
-                <option>Admissions</option>
-                <option>Administration</option>
-                <option>Other</option>
-              </select>
+            <div className="contact-card fade-in">
+              <div className="contact-icon">📧</div>
+              <h3>Email Support</h3>
+              <p>it@visayasmed.com.ph</p>
+              <span>24/7 Response</span>
             </div>
-            <div className="form-group">
-              <label>Request Type</label>
-              <select>
-                <option value="">Select request type</option>
-                <option>Hardware Issue</option>
-                <option>Software / HIS Support</option>
-                <option>Network / Connectivity</option>
-                <option>Account / Password</option>
-                <option>New Device / Asset Request</option>
-                <option>Security Concern</option>
-                <option>Other</option>
-              </select>
+            <div className="contact-card fade-in">
+              <div className="contact-icon">🏥</div>
+              <h3>On-Site Support</h3>
+              <p>IT Department Office</p>
+              <span>Ground Floor, Main Building</span>
             </div>
-            <div className="form-group">
-              <label>Message / Description</label>
-              <textarea placeholder="Describe your issue or request in detail..."></textarea>
-            </div>
-            <button className="btn-primary" style={{width:'100%',padding:'.8rem',fontSize:'.9rem'}}>
-              📤 Submit Request
-            </button>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
       <footer>
-        <div className="footer-grid">
-          <div className="footer-about">
-            <a href="#" className="logo">
-              <div className="logo-icon" style={{width:'38px',height:'38px'}}>
-                <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8v.01l-8 4-8-4V8l8-3.82zM4 9.78l7 3.5V19.4l-7-3.5V9.78zm9 10.62V13.28l7-3.5v6.12l-7 3.5z"/></svg>
-              </div>
-              <div className="logo-text">
-                <strong style={{color:'white',fontSize:'1.1rem'}}>VISMED</strong>
+        <div className="container">
+          <div className="footer-content">
+            <div className="footer-left">
+              <div className="footer-logo">
+                <strong>VISMED</strong>
                 <span>IT Department</span>
               </div>
-            </a>
-            <p style={{marginTop:'1rem'}}>Providing innovative and reliable IT infrastructure to support the mission of VISMED Hospital in delivering exceptional patient care in Cebu.</p>
+              <p>Delivering technology solutions for healthcare excellence</p>
+            </div>
+            <div className="footer-links">
+              <CustomLinks category="footer" />
+            </div>
           </div>
-          <div className="footer-col">
-            <h4>Services</h4>
-            <a href="#">Help Desk</a>
-            <a href="#">HIS / EMR Support</a>
-            <a href="#">Network Operations</a>
-            <a href="#">Cybersecurity</a>
-            <a href="#">Device Management</a>
+          <div className="footer-bottom">
+            <p>&copy; 2024 VISMED Hospital IT Department. All rights reserved.</p>
           </div>
-          <div className="footer-col">
-            <h4>Resources</h4>
-            <a href="#">IT Portal</a>
-            <a href="#">Submit a Ticket</a>
-            <a href="#">IT Policies</a>
-            <a href="#">Forms & Requests</a>
-            <a href="#">Staff Training</a>
-          </div>
-          <div className="footer-col">
-            <h4>Hospital</h4>
-            <a href="#">VISMED Hospital</a>
-            <a href="#">Departments</a>
-            <a href="#">Patient Care</a>
-            <a href="#">Find a Doctor</a>
-            <a href="#">Appointments</a>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <span>© 2026 VISMED Hospital – IT Department. All rights reserved.</span>
-          <span>Privacy Policy · Data Security · Terms of Use</span>
         </div>
       </footer>
     </>

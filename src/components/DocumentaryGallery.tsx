@@ -25,7 +25,7 @@ const DocumentaryGallery: React.FC = () => {
           {
             id: '1',
             type: 'image',
-            src: '/documentary/images/597298515_753483901094684_965509077331795814_n.jpg',
+            src: 'Network Equipment',
             title: 'IT Team Building Activity',
             description: 'Team collaboration and bonding session with IT department members.',
             date: 'Feb 2024'
@@ -33,41 +33,41 @@ const DocumentaryGallery: React.FC = () => {
           {
             id: '2',
             type: 'image',
-            src: '/documentary/images/597347948_844148291758249_9177582673195127349_n.jpg',
-            title: 'Network Infrastructure Setup',
-            description: 'Installation and configuration of network equipment for hospital connectivity.',
+            src: 'Christmas Party',
+            title: 'Christmas Denim Party',
+            description: 'Annual Christmas celebration and team building event with denim theme.',
             date: 'Feb 2024'
           },
           {
             id: '3',
             type: 'image',
-            src: '/documentary/images/597574865_704533305785195_571104752883722668_n.jpg',
-            title: 'Server Room Maintenance',
-            description: 'Regular maintenance and optimization of server infrastructure for reliable hospital operations.',
+            src: 'Christmas Party Group',
+            title: 'Christmas Team Gathering',
+            description: 'Christmas party group photo with IT department team members.',
             date: 'Feb 2024'
           },
           {
             id: '4',
             type: 'image',
-            src: '/documentary/images/623250975_1252442546461226_8152827667388661683_n.jpg',
-            title: 'IT Training Session',
-            description: 'Hands-on training for hospital staff on new IT systems and software applications.',
+            src: 'Team Member Portrait',
+            title: 'IT Team Member',
+            description: 'Professional portrait of IT department team member.',
             date: 'Jan 2024'
           },
           {
             id: '5',
             type: 'image',
-            src: '/documentary/images/626294003_1225316629199226_4450420096650389425_n.jpg',
-            title: 'Hardware Installation',
-            description: 'Installation of new computer systems and hardware for hospital departments.',
+            src: 'Server Work',
+            title: 'Server Infrastructure Work',
+            description: 'Technical work on server racks and IT infrastructure.',
             date: 'Jan 2024'
           },
           {
             id: '6',
             type: 'image',
-            src: '/documentary/images/626813723_942371032059848_1730026989541514522_n.jpg',
-            title: 'IT Team Meeting',
-            description: 'Strategic planning and coordination meeting for upcoming IT projects and initiatives.',
+            src: 'Technical Documentation',
+            title: 'IT Documentation',
+            description: 'Technical documentation and system configuration details.',
             date: 'Jan 2024'
           },
           {
@@ -134,7 +134,7 @@ const DocumentaryGallery: React.FC = () => {
         {
           id: '1',
           type: 'image',
-          src: '/documentary/images/597298515_753483901094684_965509077331795814_n.jpg',
+          src: 'Network Equipment',
           title: 'IT Team Building Activity',
           description: 'Team collaboration and bonding session with IT department members.',
           date: 'Feb 2024'
@@ -142,41 +142,41 @@ const DocumentaryGallery: React.FC = () => {
         {
           id: '2',
           type: 'image',
-          src: '/documentary/images/597347948_844148291758249_9177582673195127349_n.jpg',
-          title: 'Network Infrastructure Setup',
-          description: 'Installation and configuration of network equipment for hospital connectivity.',
+          src: 'Christmas Party',
+          title: 'Christmas Denim Party',
+          description: 'Annual Christmas celebration and team building event with denim theme.',
           date: 'Feb 2024'
         },
         {
           id: '3',
           type: 'image',
-          src: '/documentary/images/597574865_704533305785195_571104752883722668_n.jpg',
-          title: 'Server Room Maintenance',
-          description: 'Regular maintenance and optimization of server infrastructure for reliable hospital operations.',
+          src: 'Christmas Party Group',
+          title: 'Christmas Team Gathering',
+          description: 'Christmas party group photo with IT department team members.',
           date: 'Feb 2024'
         },
         {
           id: '4',
           type: 'image',
-          src: '/documentary/images/623250975_1252442546461226_8152827667388661683_n.jpg',
-          title: 'IT Training Session',
-          description: 'Hands-on training for hospital staff on new IT systems and software applications.',
+          src: 'Team Member Portrait',
+          title: 'IT Team Member',
+          description: 'Professional portrait of IT department team member.',
           date: 'Jan 2024'
         },
         {
           id: '5',
           type: 'image',
-          src: '/documentary/images/626294003_1225316629199226_4450420096650389425_n.jpg',
-          title: 'Hardware Installation',
-          description: 'Installation of new computer systems and hardware for hospital departments.',
+          src: 'Server Work',
+          title: 'Server Infrastructure Work',
+          description: 'Technical work on server racks and IT infrastructure.',
           date: 'Jan 2024'
         },
         {
           id: '6',
           type: 'image',
-          src: '/documentary/images/626813723_942371032059848_1730026989541514522_n.jpg',
-          title: 'IT Team Meeting',
-          description: 'Strategic planning and coordination meeting for upcoming IT projects and initiatives.',
+          src: 'Technical Documentation',
+          title: 'IT Documentation',
+          description: 'Technical documentation and system configuration details.',
           date: 'Jan 2024'
         },
         {
@@ -241,20 +241,7 @@ const DocumentaryGallery: React.FC = () => {
 
   const [currentLightboxIndex, setCurrentLightboxIndex] = useState<number | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [imageLoadErrors, setImageLoadErrors] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleImageError = (imageId: string) => {
-    setImageLoadErrors(prev => new Set(prev).add(imageId));
-  };
-
-  const handleImageLoad = (imageId: string) => {
-    setImageLoadErrors(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(imageId);
-      return newSet;
-    });
-  };
 
   const openLightbox = (index: number) => {
     setCurrentLightboxIndex(index);
@@ -356,20 +343,12 @@ const DocumentaryGallery: React.FC = () => {
               onClick={() => openLightbox(index)}
             >
               {item.type === 'image' ? (
-                imageLoadErrors.has(item.id) ? (
-                  <div className="image-error-placeholder">
-                    <div className="error-icon">🖼️</div>
-                    <span>IMAGE</span>
+                <div className="gallery-text-placeholder">
+                  <div className="text-icon">🖼️</div>
+                  <div className="text-content">
+                    <span className="text-label">{item.src}</span>
                   </div>
-                ) : (
-                  <img 
-                    src={item.src} 
-                    alt={item.title} 
-                    className="gallery-media"
-                    onError={() => handleImageError(item.id)}
-                    onLoad={() => handleImageLoad(item.id)}
-                  />
-                )
+                </div>
               ) : (
                 <>
                   <video src={item.src} className="gallery-media" muted />

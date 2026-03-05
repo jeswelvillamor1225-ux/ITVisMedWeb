@@ -20,22 +20,86 @@ const CustomLinks: React.FC<CustomLinksProps> = ({ category, className = '' }) =
   const [links, setLinks] = useState<CustomLink[]>([]);
 
   useEffect(() => {
-    const savedLinks = localStorage.getItem('customLinks');
-    if (savedLinks) {
-      try {
-        const parsedLinks = JSON.parse(savedLinks);
-        const activeLinks = parsedLinks
-          .filter((link: CustomLink) => link.isActive && link.category === category)
-          .sort((a: CustomLink, b: CustomLink) => a.order - b.order);
-        setLinks(activeLinks);
-      } catch (error) {
-        console.error('Error loading custom links:', error);
+    const loadLinks = () => {
+      // Default links for immediate functionality
+      const defaultLinks: CustomLink[] = [
+        {
+          id: 'default-local-server',
+          title: 'Local Server',
+          url: 'http://192.168.1.8/',
+          description: 'Access local server resources',
+          icon: '🖥️',
+          category: category,
+          order: 1,
+          isActive: true
+        },
+        {
+          id: 'default-hospital-portal',
+          title: 'Hospital Portal',
+          url: 'https://portal.visayasmed.com',
+          description: 'Main hospital information system',
+          icon: '🏥',
+          category: category,
+          order: 2,
+          isActive: true
+        },
+        {
+          id: 'default-email',
+          title: 'Email System',
+          url: 'https://mail.visayasmed.com',
+          description: 'Staff email and communication',
+          icon: '📧',
+          category: category,
+          order: 3,
+          isActive: true
+        },
+        {
+          id: 'default-documentation',
+          title: 'IT Documentation',
+          url: 'https://docs.visayasmed.com',
+          description: 'Technical documentation and guides',
+          icon: '📚',
+          category: category,
+          order: 4,
+          isActive: true
+        }
+      ];
+
+      const savedLinks = localStorage.getItem('customLinks');
+      if (savedLinks) {
+        try {
+          const parsedLinks = JSON.parse(savedLinks);
+          const activeLinks = parsedLinks
+            .filter((link: CustomLink) => link.isActive && link.category === category)
+            .sort((a: CustomLink, b: CustomLink) => a.order - b.order);
+          
+          // If no saved links for this category, use default
+          if (activeLinks.length === 0) {
+            setLinks(defaultLinks);
+          } else {
+            setLinks(activeLinks);
+          }
+        } catch (error) {
+          console.error('Error loading custom links:', error);
+          setLinks(defaultLinks);
+        }
+      } else {
+        // No saved links, use default
+        setLinks(defaultLinks);
       }
-    }
+    };
+
+    loadLinks();
   }, [category]);
 
+  console.log(`CustomLinks - Category: ${category}, Links:`, links);
+
   if (links.length === 0) {
-    return null;
+    return (
+      <div className={`custom-links-container ${category}-links ${className}`} style={{padding: '10px', background: 'rgba(255,0,0,0.1)', border: '1px solid red'}}>
+        <small>No links found for category: {category}</small>
+      </div>
+    );
   }
 
   const renderLink = (link: CustomLink) => {
@@ -49,9 +113,11 @@ const CustomLinks: React.FC<CustomLinksProps> = ({ category, className = '' }) =
           className={`${baseClass} btn-hero-primary`}
           target="_blank"
           rel="noopener noreferrer"
+          title={link.description}
         >
-          {link.icon && <span>{link.icon}</span>}
-          {link.title}
+          {link.icon && <span className="link-icon">{link.icon}</span>}
+          <span className="link-text">{link.title}</span>
+          <span className="link-arrow">→</span>
         </a>
       );
     }
@@ -64,8 +130,11 @@ const CustomLinks: React.FC<CustomLinksProps> = ({ category, className = '' }) =
           className={`${baseClass} svc-link`}
           target="_blank"
           rel="noopener noreferrer"
+          title={link.description}
         >
-          {link.title} →
+          {link.icon && <span className="link-icon">{link.icon}</span>}
+          <span className="link-text">{link.title}</span>
+          <span className="link-arrow">→</span>
         </a>
       );
     }
@@ -78,9 +147,10 @@ const CustomLinks: React.FC<CustomLinksProps> = ({ category, className = '' }) =
           className={`${baseClass} nav-link`}
           target="_blank"
           rel="noopener noreferrer"
+          title={link.description}
         >
-          {link.icon && <span>{link.icon}</span>}
-          {link.title}
+          {link.icon && <span className="link-icon">{link.icon}</span>}
+          <span className="link-text">{link.title}</span>
         </a>
       );
     }
@@ -93,9 +163,10 @@ const CustomLinks: React.FC<CustomLinksProps> = ({ category, className = '' }) =
           className={`${baseClass} footer-link`}
           target="_blank"
           rel="noopener noreferrer"
+          title={link.description}
         >
-          {link.icon && <span>{link.icon}</span>}
-          {link.title}
+          {link.icon && <span className="link-icon">{link.icon}</span>}
+          <span className="link-text">{link.title}</span>
         </a>
       );
     }
@@ -107,9 +178,10 @@ const CustomLinks: React.FC<CustomLinksProps> = ({ category, className = '' }) =
         className={baseClass}
         target="_blank"
         rel="noopener noreferrer"
+        title={link.description}
       >
-        {link.icon && <span>{link.icon}</span>}
-        {link.title}
+        {link.icon && <span className="link-icon">{link.icon}</span>}
+        <span className="link-text">{link.title}</span>
       </a>
     );
   };
