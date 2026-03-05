@@ -9,6 +9,7 @@ import AdminWebsite from './components/AdminWebsite.tsx';
 import ITPortal from './components/ITPortal';
 import AdminDashboard from './components/AdminDashboard';
 import AdminPortal from './components/AdminPortal';
+import DocumentaryAdmin from './components/DocumentaryAdmin';
 import './index.css';
 
 function App() {
@@ -35,6 +36,8 @@ function App() {
         setCurrentPage('it-portal');
       } else if (path === '/admin-portal') {
         setCurrentPage('admin-portal');
+      } else if (path === '/documentary-admin') {
+        setCurrentPage('documentary-admin');
       } else {
         setCurrentPage('home');
       }
@@ -63,6 +66,8 @@ function App() {
         return <ITPortal />;
       case 'admin-portal':
         return <AdminPortal />;
+      case 'documentary-admin':
+        return <DocumentaryAdmin />;
       default:
         return <VISMEDWebsite />;
     }
